@@ -1,0 +1,7 @@
+com\rrg\contabilidade\AbreBancoGeral.class
+com\rrg\contabilidade\Contabilidade.class
+com\rrg\contabilidade\InicializadorDeBancoDeDados.class
+com\rrg\contabilidade\Contabilidade$1.class
+com\rrg\contabilidade\CriaTabelasDoBancoDeDadosGeral.class
+com\rrg\contabilidade\ConfiguracaoBanco.class
+com\rrg\model\Usuarios.class
