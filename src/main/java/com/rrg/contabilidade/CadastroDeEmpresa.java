@@ -2,6 +2,7 @@ package com.rrg.contabilidade;
 
 import com.rrg.contabilidade.model.Empresa;
 import com.rrg.contabilidade.model.dao.EmpresaDAO;
+import com.rrg.contabilidade.util.InicializadorDeBancoDeDadosEmpresa;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +38,9 @@ public class CadastroDeEmpresa extends JPanel {
 
         JLabel lbTitulo = new JLabel("Cadastro de Empresa");
         lbTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
         add(lbTitulo, gbc);
 
         gbc.gridwidth = 1;
@@ -49,42 +52,49 @@ public class CadastroDeEmpresa extends JPanel {
         gbc.gridx = 1;
         add(tfCnpj, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.gridy++;
         add(new JLabel("Razão Social:"), gbc);
         tfRazao = new JTextField(20);
         tfRazao.setText(empresa.getRazao() != null ? empresa.getRazao() : "");
         gbc.gridx = 1;
         add(tfRazao, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.gridy++;
         add(new JLabel("Endereço:"), gbc);
         tfEndereco = new JTextField(20);
         tfEndereco.setText(empresa.getEndereco() != null ? empresa.getEndereco() : "");
         gbc.gridx = 1;
         add(tfEndereco, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.gridy++;
         add(new JLabel("Responsável:"), gbc);
         tfResponsavel = new JTextField(20);
         tfResponsavel.setText(empresa.getResponsavel() != null ? empresa.getResponsavel() : "");
         gbc.gridx = 1;
         add(tfResponsavel, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.gridy++;
         add(new JLabel("Telefone Empresa:"), gbc);
         tfTelEmpresa = new JTextField(20);
         tfTelEmpresa.setText(empresa.getTelefoneEmpresa() != null ? empresa.getTelefoneEmpresa() : "");
         gbc.gridx = 1;
         add(tfTelEmpresa, gbc);
 
-        gbc.gridx = 0; gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.gridy++;
         add(new JLabel("Telefone Responsável:"), gbc);
         tfTelResponsavel = new JTextField(20);
         tfTelResponsavel.setText(empresa.getTelefoneResponsavel() != null ? empresa.getTelefoneResponsavel() : "");
         gbc.gridx = 1;
         add(tfTelResponsavel, gbc);
 
-        gbc.gridx = 0; gbc.gridy++; gbc.gridwidth = 2;
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.gridwidth = 2;
         btSalvar = new JButton("Salvar");
         add(btSalvar, gbc);
 
@@ -115,6 +125,10 @@ public class CadastroDeEmpresa extends JPanel {
             EmpresaDAO dao = new EmpresaDAO();
             if (dao.buscarPorCnpj(cnpj) == null) {
                 dao.inserir(empresa);
+
+                // Criar banco da empresa com o mesmo CNPJ
+                InicializadorDeBancoDeDadosEmpresa.verificarOuCriarBancoEmpresa(cnpj);
+
             } else {
                 dao.atualizar(empresa);
             }

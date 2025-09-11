@@ -1,5 +1,7 @@
 package com.rrg.contabilidade.util;
 
+import com.rrg.contabilidade.model.Empresa;
+import com.rrg.contabilidade.model.dao.EmpresaDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,16 +39,34 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
 
             GeradorDosPlanosDeContasPadrao gerador = new GeradorDosPlanosDeContasPadrao(conexao);
             gerador.gerarPlanosPadrao(stmt);
-            
+
             GeradorDosPapeis geradorDosPapeis = new GeradorDosPapeis(stmt);
             geradorDosPapeis.gerarPapeisPadrao();
-            
+
             GeradorDasOperacoes geradorDasOperacoes = new GeradorDasOperacoes(stmt);
             geradorDasOperacoes.gerarOperacoes();
-            
-            
-            // Outras tabelas futuras...
 
+            // Dentro do CriadorDasTabelasDoBancoDeDadosGeral, após gerar planos e papeis
+            EmpresaDAO empresaDAO = new EmpresaDAO();
+
+// Verifica se já existe a empresa fictícia
+            String cnpjFicticio = "00.000.000/0000-00"; // ou qualquer que você queira
+            if (empresaDAO.buscarPorCnpj(cnpjFicticio) == null) {
+                Empresa empresaFicticia = new Empresa();
+                empresaFicticia.setCnpj(cnpjFicticio);
+                empresaFicticia.setRazao("Empresa Fictícia");
+                empresaFicticia.setEndereco("Rua Exemplo, 123");
+                empresaFicticia.setResponsavel("Administrador");
+                empresaFicticia.setTelefoneEmpresa("0000-0000");
+                empresaFicticia.setTelefoneResponsavel("0000-0000");
+
+                empresaDAO.inserir(empresaFicticia);
+
+                // Também cria o banco da empresa fictícia
+                InicializadorDeBancoDeDadosEmpresa.verificarOuCriarBancoEmpresa(cnpjFicticio);
+            }
+
+            // Outras tabelas futuras...
             JOptionPane.showMessageDialog(null, "Tabelas criadas com sucesso.");
 
         } catch (SQLException e) {
@@ -55,19 +75,19 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
         }
     }
 
-private void criarTabelasDeUsuarios(Statement stmt) throws SQLException {
-    // Tabela de papeis
-    String sql = """
+    private void criarTabelasDeUsuarios(Statement stmt) throws SQLException {
+        // Tabela de papeis
+        String sql = """
         CREATE TABLE IF NOT EXISTS papeis (
             id INT AUTO_INCREMENT PRIMARY KEY,
             nome_papel VARCHAR(50) NOT NULL UNIQUE
         );
     """;
-    stmt.executeUpdate(sql);
-    JOptionPane.showMessageDialog(null, "Tabela 'papeis' criada ou verificada com sucesso.");
+        stmt.executeUpdate(sql);
+        JOptionPane.showMessageDialog(null, "Tabela 'papeis' criada ou verificada com sucesso.");
 
-    // Tabela de usuários
-    sql = """
+        // Tabela de usuários
+        sql = """
         CREATE TABLE IF NOT EXISTS usuarios (
             id INT AUTO_INCREMENT PRIMARY KEY,
             nome VARCHAR(100) NOT NULL,
@@ -82,21 +102,21 @@ private void criarTabelasDeUsuarios(Statement stmt) throws SQLException {
                 ON UPDATE CASCADE
         );
     """;
-    stmt.executeUpdate(sql);
-    JOptionPane.showMessageDialog(null, "Tabela 'usuarios' criada ou verificada com sucesso.");
+        stmt.executeUpdate(sql);
+        JOptionPane.showMessageDialog(null, "Tabela 'usuarios' criada ou verificada com sucesso.");
 
-    // Tabela de operacoes
-    sql = """
+        // Tabela de operacoes
+        sql = """
         CREATE TABLE IF NOT EXISTS operacoes (
             id INT AUTO_INCREMENT PRIMARY KEY,
             operacao VARCHAR(100) NOT NULL UNIQUE
         );
     """;
-    stmt.executeUpdate(sql);
-    JOptionPane.showMessageDialog(null, "Tabela 'operacoes' criada ou verificada com sucesso.");
+        stmt.executeUpdate(sql);
+        JOptionPane.showMessageDialog(null, "Tabela 'operacoes' criada ou verificada com sucesso.");
 
-    // Tabela de associações usuario <-> operacoes
-    sql = """
+        // Tabela de associações usuario <-> operacoes
+        sql = """
         CREATE TABLE IF NOT EXISTS operacoes_usuarios (
             id INT AUTO_INCREMENT PRIMARY KEY,
             id_usuario INT NOT NULL,
@@ -110,11 +130,11 @@ private void criarTabelasDeUsuarios(Statement stmt) throws SQLException {
             UNIQUE KEY idx_usuario_operacao (id_usuario, id_operacao)
         );
     """;
-    stmt.executeUpdate(sql);
-    JOptionPane.showMessageDialog(null, "Tabela 'operacoes_usuarios' criada ou verificada com sucesso.");
+        stmt.executeUpdate(sql);
+        JOptionPane.showMessageDialog(null, "Tabela 'operacoes_usuarios' criada ou verificada com sucesso.");
 
-    // Tabela de associações papeis <-> operacoes
-    sql = """
+        // Tabela de associações papeis <-> operacoes
+        sql = """
         CREATE TABLE IF NOT EXISTS operacoes_papeis (
             id INT AUTO_INCREMENT PRIMARY KEY,
             id_papel INT NOT NULL,
@@ -128,9 +148,9 @@ private void criarTabelasDeUsuarios(Statement stmt) throws SQLException {
             UNIQUE KEY idx_papel_operacao (id_papel, id_operacao)
         );
     """;
-    stmt.executeUpdate(sql);
-    JOptionPane.showMessageDialog(null, "Tabela 'operacoes_papeis' criada ou verificada com sucesso.");
-}
+        stmt.executeUpdate(sql);
+        JOptionPane.showMessageDialog(null, "Tabela 'operacoes_papeis' criada ou verificada com sucesso.");
+    }
 
     private void criarTabelasDePlanoDeContas(Statement stmt) throws SQLException {
         String sql = """
