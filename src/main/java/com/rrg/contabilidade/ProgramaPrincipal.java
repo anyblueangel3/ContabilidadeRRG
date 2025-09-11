@@ -10,7 +10,6 @@ import java.awt.*;
  * 
  * JFrame principal do sistema, contendo todos os painéis de trabalho.
  * MVC: ProgramaPrincipal = View/Controller, painéis = View
- * 
  */
 public class ProgramaPrincipal extends JFrame {
 
@@ -26,32 +25,39 @@ public class ProgramaPrincipal extends JFrame {
     }
 
     /**
+     * Permite trocar o painel central do JFrame
+     */
+    public void setPainelCentral(JPanel painel) {
+        if (painelAtual != null) {
+            remove(painelAtual);
+        }
+        painelAtual = painel;
+        add(painelAtual, BorderLayout.CENTER);
+        revalidate();
+        repaint();
+    }
+
+    /**
      * Abre a tela principal do sistema ou cadastro de usuários
      * dependendo se o usuário possui ID (novo usuário) ou não.
      */
     public void abrirTelaPrincipal(Usuario usuario) {
         this.usuarioLogado = usuario;
 
-        // Remove painel antigo se houver
-        if (painelAtual != null) {
-            remove(painelAtual);
-        }
-
         if (usuarioLogado.getId() == null) {
             // Primeiro acesso ou criação de ADMIN
-            CadastroDeUsuarios cadastroPanel = 
-                    new CadastroDeUsuarios(this, usuarioLogado);
-            painelAtual = cadastroPanel;
-            add(painelAtual, BorderLayout.CENTER);
+            CadastroDeUsuarios cadastroPanel = new CadastroDeUsuarios(this, usuarioLogado);
+            setPainelCentral(cadastroPanel);
         } else {
             // Usuário existente, abre painel de trabalho principal
             JPanel painelTrabalho = criarPainelPrincipal(usuarioLogado);
-            painelAtual = painelTrabalho;
-            add(painelAtual, BorderLayout.CENTER);
+            setPainelCentral(painelTrabalho);
+
+            // Inicializa menu
+            MenuPrincipal menu = new MenuPrincipal(this);
+            setJMenuBar(menu);
         }
 
-        revalidate();
-        repaint();
         setVisible(true);
     }
 
@@ -61,10 +67,11 @@ public class ProgramaPrincipal extends JFrame {
     private JPanel criarPainelPrincipal(Usuario usuario) {
         JPanel painel = new JPanel(new BorderLayout());
 
-        JLabel lbBemVindo = new JLabel("Bem-vindo, " + usuario.getNome() + " (" + usuario.getPapel() + ")");
+        JLabel lbBemVindo = new JLabel(
+                "Bem-vindo, " + usuario.getNome() + " (" + usuario.getPapel() + ")"
+        );
         lbBemVindo.setHorizontalAlignment(SwingConstants.CENTER);
         lbBemVindo.setFont(new Font("Arial", Font.BOLD, 18));
-
         painel.add(lbBemVindo, BorderLayout.NORTH);
 
         // Painel central para futuras funcionalidades
@@ -74,5 +81,4 @@ public class ProgramaPrincipal extends JFrame {
 
         return painel;
     }
-
 }

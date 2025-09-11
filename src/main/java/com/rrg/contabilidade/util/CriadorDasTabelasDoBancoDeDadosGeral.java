@@ -37,6 +37,8 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
 
             criarTabelasDeLancamentos(stmt);
 
+            criarTabelaEmpresas(stmt);
+
             GeradorDosPlanosDeContasPadrao gerador = new GeradorDosPlanosDeContasPadrao(conexao);
             gerador.gerarPlanosPadrao(stmt);
 
@@ -49,8 +51,8 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
             // Dentro do CriadorDasTabelasDoBancoDeDadosGeral, após gerar planos e papeis
             EmpresaDAO empresaDAO = new EmpresaDAO();
 
-// Verifica se já existe a empresa fictícia
-            String cnpjFicticio = "00.000.000/0000-00"; // ou qualquer que você queira
+            // Verifica se já existe a empresa fictícia
+            String cnpjFicticio = "99999999999999"; // ou qualquer que você queira
             if (empresaDAO.buscarPorCnpj(cnpjFicticio) == null) {
                 Empresa empresaFicticia = new Empresa();
                 empresaFicticia.setCnpj(cnpjFicticio);
@@ -82,7 +84,7 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
             id INT AUTO_INCREMENT PRIMARY KEY,
             nome_papel VARCHAR(50) NOT NULL UNIQUE
         );
-    """;
+        """;
         stmt.executeUpdate(sql);
         JOptionPane.showMessageDialog(null, "Tabela 'papeis' criada ou verificada com sucesso.");
 
@@ -101,7 +103,7 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
                 ON DELETE SET NULL 
                 ON UPDATE CASCADE
         );
-    """;
+        """;
         stmt.executeUpdate(sql);
         JOptionPane.showMessageDialog(null, "Tabela 'usuarios' criada ou verificada com sucesso.");
 
@@ -111,7 +113,7 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
             id INT AUTO_INCREMENT PRIMARY KEY,
             operacao VARCHAR(100) NOT NULL UNIQUE
         );
-    """;
+        """;
         stmt.executeUpdate(sql);
         JOptionPane.showMessageDialog(null, "Tabela 'operacoes' criada ou verificada com sucesso.");
 
@@ -129,7 +131,7 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
                 ON UPDATE CASCADE,
             UNIQUE KEY idx_usuario_operacao (id_usuario, id_operacao)
         );
-    """;
+        """;
         stmt.executeUpdate(sql);
         JOptionPane.showMessageDialog(null, "Tabela 'operacoes_usuarios' criada ou verificada com sucesso.");
 
@@ -147,7 +149,7 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
                 ON UPDATE CASCADE,
             UNIQUE KEY idx_papel_operacao (id_papel, id_operacao)
         );
-    """;
+        """;
         stmt.executeUpdate(sql);
         JOptionPane.showMessageDialog(null, "Tabela 'operacoes_papeis' criada ou verificada com sucesso.");
     }
@@ -230,6 +232,21 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
                      """;
         stmt.executeUpdate(sql);
         JOptionPane.showMessageDialog(null, "Tabela 'periodos' criada.");
+    }
+
+    private void criarTabelaEmpresas(Statement stmt) throws SQLException {
+        String sql = """
+                     CREATE TABLE IF NOT EXISTS empresas (
+                        cnpj VARCHAR(20)PRIMARY KEY NOT NULL,
+                        razao VARCHAR(100) NOT NULL,
+                        endereco VARCHAR(255) NOT NULL,
+                        responsavel VARCHAR(100) NOT NULL,
+                        telefone_empresa VARCHAR(20),
+                        telefone_responsavel VARCHAR(20)
+                     );
+                     """;
+        stmt.executeUpdate(sql);
+        JOptionPane.showMessageDialog(null, "Tabela 'empresas' criada.");
     }
 
 }

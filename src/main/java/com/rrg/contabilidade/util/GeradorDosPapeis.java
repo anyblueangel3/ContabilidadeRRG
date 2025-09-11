@@ -21,7 +21,7 @@ public class GeradorDosPapeis {
     public void gerarPapeisPadrao() {
         try {
             // Papéis a serem inseridos
-            String[] papeis = {"ADMIN", "CONTADOR", "AUDITOR", "USUARIO"};
+            String[] papeis = {"ADMIN", "CONTADOR", "AUDITOR", "USUARIO", "VAZIO"};
 
             for (String papel : papeis) {
                 // Verifica se o papel já existe para evitar duplicidade
