@@ -6,6 +6,7 @@ import com.rrg.contabilidade.model.dao.UsuarioDAO;
 import com.rrg.contabilidade.model.dao.PapelDAO;
 import com.rrg.contabilidade.util.InicializadorDeBancoDeDadosGeral;
 import com.rrg.contabilidade.util.PasswordUtils;
+import com.rrg.contabilidade.util.SessaoDeUsuario;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +15,9 @@ import java.util.List;
 /**
  *
  * @author Ronaldo R. Godoi e Chat GPT
- *  
+ *
  * Login no sistema de Contabilidade
- * 
+ *
  */
 public class Contabilidade extends JFrame {
 
@@ -98,7 +99,7 @@ public class Contabilidade extends JFrame {
                 primeiroUsuario.setSenha(senha); // será tratado depois no CRUD
 
                 JOptionPane.showMessageDialog(this, "Nenhum ADMIN encontrado. A tela de cadastro de usuário será aberta.");
-                programa.abrirTelaPrincipal(primeiroUsuario);
+                programa.abrirCadastroDeUsuarios(primeiroUsuario);
                 this.dispose();
                 return;
             }
@@ -118,7 +119,8 @@ public class Contabilidade extends JFrame {
 
             // Login e senha corretos
             JOptionPane.showMessageDialog(this, "Login efetuado com sucesso!");
-            programa.abrirTelaPrincipal(usuario);
+            SessaoDeUsuario.logar(usuario);
+            programa.abrirTelaPrincipal();
             this.dispose();
         });
 

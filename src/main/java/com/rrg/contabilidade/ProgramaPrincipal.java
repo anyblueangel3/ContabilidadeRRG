@@ -1,15 +1,16 @@
 package com.rrg.contabilidade;
 
 import com.rrg.contabilidade.model.Usuario;
+import com.rrg.contabilidade.util.SessaoDeUsuario;
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * 
+ *
  * @author Ronaldo Rodrigues Godoi e Chat GPT
- * 
- * JFrame principal do sistema, contendo todos os painéis de trabalho.
- * MVC: ProgramaPrincipal = View/Controller, painéis = View
+ *
+ * JFrame principal do sistema, contendo todos os painéis de trabalho. MVC:
+ * ProgramaPrincipal = View/Controller, painéis = View
  */
 public class ProgramaPrincipal extends JFrame {
 
@@ -38,28 +39,30 @@ public class ProgramaPrincipal extends JFrame {
     }
 
     /**
-     * Abre a tela principal do sistema ou cadastro de usuários
-     * dependendo se o usuário possui ID (novo usuário) ou não.
+     * Abre a tela principal do sistema ou cadastro de usuários dependendo se o
+     * usuário possui ID (novo usuário) ou não.
      */
-    public void abrirTelaPrincipal(Usuario usuario) {
-        this.usuarioLogado = usuario;
-
-        if (usuarioLogado.getId() == null) {
-            // Primeiro acesso ou criação de ADMIN
-            CadastroDeUsuarios cadastroPanel = new CadastroDeUsuarios(this, usuarioLogado);
-            setPainelCentral(cadastroPanel);
-        } else {
-            // Usuário existente, abre painel de trabalho principal
-            JPanel painelTrabalho = criarPainelPrincipal(usuarioLogado);
-            setPainelCentral(painelTrabalho);
-
-            // Inicializa menu
-            MenuPrincipal menu = new MenuPrincipal(this);
-            setJMenuBar(menu);
-        }
-
-        setVisible(true);
+    public void abrirTelaPrincipal() {
+    if (!SessaoDeUsuario.isLogado()) {
+        JOptionPane.showMessageDialog(null, "Nenhum usuário logado. Faça login novamente.");
+        return;
     }
+
+    Usuario usuario = SessaoDeUsuario.getUsuarioLogado();
+
+    // Atualiza título com o usuário logado
+    setTitle("Sistema Contabilidade - Usuário: " + usuario.getLogin());
+
+    // Define a barra de menus principal
+    setJMenuBar(new MenuPrincipal(this));
+
+    // Carrega o painel principal (bem-vindo + conteúdo inicial)
+    JPanel painel = criarPainelPrincipal(usuario);
+    setPainelCentral(painel);
+
+    setVisible(true);
+}
+
 
     /**
      * Cria o painel principal do sistema (painel de boas-vindas e menu básico)
@@ -81,4 +84,15 @@ public class ProgramaPrincipal extends JFrame {
 
         return painel;
     }
+
+    /**
+     * Abre o painel de cadastro de usuários dentro do JFrame principal.
+     */
+    public void abrirCadastroDeUsuarios(Usuario usuario) {
+        CadastroDeUsuarios painelCadastro = new CadastroDeUsuarios(this, usuario);
+        setPainelCentral(painelCadastro);
+        setTitle("Cadastro de Usuário");
+        setVisible(true);
+    }
+
 }

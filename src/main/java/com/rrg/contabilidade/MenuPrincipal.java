@@ -1,14 +1,16 @@
 package com.rrg.contabilidade;
 
+import com.rrg.contabilidade.model.Usuario;
+import com.rrg.contabilidade.util.SessaoDeUsuario;
 import javax.swing.*;
 
 /**
- * 
+ *
  * @author Ronaldo Rodrigues Godoi e Chat GPT
- * 
+ *
  * JMenuBar do sistema, chama diretamente os painéis de cadastro existentes.
  * Barra de menu principal.
- * 
+ *
  */
 public class MenuPrincipal extends JMenuBar {
 
@@ -34,6 +36,29 @@ public class MenuPrincipal extends JMenuBar {
 
         menuCadastros.add(miUsuarios);
         menuCadastros.add(miEmpresas);
+
+        // ===== Item Sair =====
+        JMenuItem miSair = new JMenuItem("Sair");
+        miSair.addActionListener(e -> {
+
+            Object[] opcoes = {"Sim", "Não"};
+            int confirm = JOptionPane.showOptionDialog(
+                    programaPrincipal,
+                    "Deseja realmente sair do sistema?",
+                    "Confirmação",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opcoes,
+                    opcoes[1] // valor padrão selecionado = "Não"
+            );
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+        });
+        menuCadastros.addSeparator(); // separador visual antes do Sair
+        menuCadastros.add(miSair);
 
         // ===== Menu Operações =====
         JMenu menuOperacoes = new JMenu("Operações");
@@ -86,4 +111,5 @@ public class MenuPrincipal extends JMenuBar {
         add(menuOperacoes);
         add(menuRelatorios);
     }
+
 }

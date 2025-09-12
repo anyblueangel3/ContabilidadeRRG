@@ -133,7 +133,7 @@ public class CadastroDeEmpresa extends JPanel {
                 dao.atualizar(empresa);
             }
 
-            programaPrincipal.abrirTelaPrincipal(null);
+            programaPrincipal.abrirTelaPrincipal();
         });
     }
 }

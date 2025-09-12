@@ -5,13 +5,18 @@ import com.rrg.contabilidade.model.Papel;
 import com.rrg.contabilidade.model.dao.UsuarioDAO;
 import com.rrg.contabilidade.model.dao.PapelDAO;
 import com.rrg.contabilidade.util.PasswordUtils;
+import com.rrg.contabilidade.util.SessaoDeUsuario;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
 /**
+ * 
+ * @author Ronaldo Rodrigues Godoi e Chat GPT
+ * 
  * Painel de cadastro de usuários MVC: View (UI) + Controller leve
+ * 
  */
 public class CadastroDeUsuarios extends JPanel {
 
@@ -145,7 +150,8 @@ public class CadastroDeUsuarios extends JPanel {
             }
 
             // Retorna ao painel principal
-            programaPrincipal.abrirTelaPrincipal(usuario);
+            SessaoDeUsuario.logar(usuario);
+            programaPrincipal.abrirTelaPrincipal();
         });
     }
 }

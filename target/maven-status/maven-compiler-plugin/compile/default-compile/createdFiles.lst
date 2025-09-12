@@ -1,3 +1,4 @@
+com\rrg\contabilidade\util\SessaoDeUsuario.class
 com\rrg\contabilidade\model\dao\PermissaoDAO.class
 com\rrg\contabilidade\model\Empresa.class
 com\rrg\contabilidade\model\dao\PermissaoDeUsuarioDAO.class
