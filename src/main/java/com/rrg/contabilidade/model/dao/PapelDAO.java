@@ -6,18 +6,22 @@ import com.rrg.contabilidade.util.AbreBancoGeral;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author Ronaldo Rodrigues Godoi e Chat GPT
  *
  * DAO para operações de Papeis.
+ *
+ * DAO para persistência de objetos Papel. Responsável apenas por acessar o
+ * banco.
  */
 public class PapelDAO {
 
-    public void inserir(Papel papel) {
+    // Inserir novo papel
+    public void inserir(Papel papel) throws SQLException {
         String sql = "INSERT INTO papeis (nome_papel) VALUES (?)";
+
         try (Connection conexao = AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, papel.getNomePapel());
@@ -29,50 +33,27 @@ public class PapelDAO {
                         papel.setId(rs.getInt(1));
                     }
                 }
-                JOptionPane.showMessageDialog(null, "Papel inserido com sucesso.");
             }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao inserir papel: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-    public void atualizar(Papel papel) {
-        String sql = "UPDATE papeis SET nome_papel=? WHERE id=?";
-        try (Connection conexao = AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql)) {
+    // Listar todos os papeis
+    public List<Papel> listarTodos() throws SQLException {
+        List<Papel> lista = new ArrayList<>();
+        String sql = "SELECT * FROM papeis ORDER BY nome_papel";
 
-            ps.setString(1, papel.getNomePapel());
-            ps.setInt(2, papel.getId());
+        try (Connection conexao = AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
-            int linhas = ps.executeUpdate();
-            if (linhas > 0) {
-                JOptionPane.showMessageDialog(null, "Papel atualizado com sucesso.");
+            while (rs.next()) {
+                Papel p = new Papel(rs.getInt("id"), rs.getString("nome_papel"));
+                lista.add(p);
             }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao atualizar papel: " + e.getMessage());
-            e.printStackTrace();
         }
+        return lista;
     }
 
-    public void deletar(int id) {
-        String sql = "DELETE FROM papeis WHERE id=?";
-        try (Connection conexao = AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            int linhas = ps.executeUpdate();
-            if (linhas > 0) {
-                JOptionPane.showMessageDialog(null, "Papel deletado com sucesso.");
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao deletar papel: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public Papel buscarPorId(int id) {
+    // Buscar papel por id
+    public Papel buscarPorId(int id) throws SQLException {
         String sql = "SELECT * FROM papeis WHERE id=?";
         try (Connection conexao = AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql)) {
 
@@ -82,44 +63,20 @@ public class PapelDAO {
                     return new Papel(rs.getInt("id"), rs.getString("nome_papel"));
                 }
             }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao buscar papel: " + e.getMessage());
-            e.printStackTrace();
         }
         return null;
     }
 
-    public List<Papel> listarTodos() {
-        List<Papel> lista = new ArrayList<>();
-        String sql = "SELECT * FROM papeis ORDER BY nome_papel";
-        try (Connection conexao = AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                lista.add(new Papel(rs.getInt("id"), rs.getString("nome_papel")));
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao listar papeis: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return lista;
-    }
-
-    public Papel buscarPorNome(String nomePapel) {
-        String sql = "SELECT * FROM papeis WHERE UPPER(nome_papel) = UPPER(?)";
+    // dentro de com.rrg.contabilidade.model.dao.PapelDAO
+    public Papel buscarPorNome(String nome) throws SQLException {
+        String sql = "SELECT * FROM papeis WHERE nome_papel = ?";
         try (Connection conexao = AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql)) {
-
-            ps.setString(1, nomePapel);
+            ps.setString(1, nome);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Papel(rs.getInt("id"), rs.getString("nome_papel"));
                 }
             }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao buscar papel por nome: " + e.getMessage());
-            e.printStackTrace();
         }
         return null;
     }

@@ -18,6 +18,7 @@ C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\GeradorDosPapeis.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\ConfiguracaoBanco.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\Papel.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\PapelController.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\CriadorDasTabelasDoBancoDeDadosEmpresa.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\GeradorDosPlanosDeContasPadrao.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\InicializadorDeBancoDeDadosEmpresa.java
@@ -25,6 +26,7 @@ C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\UsuarioDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\Empresa.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\EmpresaDAO.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\CadastroDePapeis.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\ProgramaPrincipal.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PapelDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\OperacaoDeUsuario.java

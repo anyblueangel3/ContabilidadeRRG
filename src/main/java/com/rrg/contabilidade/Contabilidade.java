@@ -1,9 +1,9 @@
 package com.rrg.contabilidade;
 
+import com.rrg.contabilidade.controller.PapelController;
+import com.rrg.contabilidade.controller.UsuarioController;
 import com.rrg.contabilidade.model.Usuario;
 import com.rrg.contabilidade.model.Papel;
-import com.rrg.contabilidade.model.dao.UsuarioDAO;
-import com.rrg.contabilidade.model.dao.PapelDAO;
 import com.rrg.contabilidade.util.InicializadorDeBancoDeDadosGeral;
 import com.rrg.contabilidade.util.PasswordUtils;
 import com.rrg.contabilidade.util.SessaoDeUsuario;
@@ -77,11 +77,11 @@ public class Contabilidade extends JFrame {
                 return;
             }
 
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
-            List<Usuario> todosUsuarios = usuarioDAO.listarTodos();
+            UsuarioController usuarioController = new UsuarioController();
+            List<Usuario> todosUsuarios = usuarioController.listarTodosUsuarios();
 
-            PapelDAO papelDAO = new PapelDAO();
-            Papel papelAdmin = papelDAO.buscarPorNome("ADMIN");
+            PapelController papelController = new PapelController();
+            Papel papelAdmin = papelController.buscarPorNome("ADMIN");
 
             if (papelAdmin == null) {
                 JOptionPane.showMessageDialog(this, "O papel ADMIN não existe. Cadastre-o primeiro na tabela de papeis.");
@@ -105,7 +105,7 @@ public class Contabilidade extends JFrame {
             }
 
             // Há ADMIN, valida usuário
-            Usuario usuario = usuarioDAO.buscarPorLogin(login);
+            Usuario usuario = usuarioController.buscarUsuarioPorLogin(login);
 
             if (usuario == null) {
                 JOptionPane.showMessageDialog(this, "Usuário não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);

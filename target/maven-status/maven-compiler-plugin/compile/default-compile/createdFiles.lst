@@ -24,8 +24,10 @@ com\rrg\contabilidade\model\dao\PermissaoDoPapelDAO.class
 com\rrg\contabilidade\model\dao\PapelDAO.class
 com\rrg\contabilidade\model\dao\UsuarioDAO.class
 com\rrg\contabilidade\MenuPrincipal.class
+com\rrg\contabilidade\CadastroDePapeis.class
 com\rrg\contabilidade\util\GeradorDasOperacoes.class
 com\rrg\contabilidade\controller\UsuarioController.class
 com\rrg\contabilidade\Contabilidade.class
 com\rrg\contabilidade\model\OperacaoDoPapel.class
+com\rrg\contabilidade\controller\PapelController.class
 com\rrg\contabilidade\model\dao\EmpresaDAO.class
