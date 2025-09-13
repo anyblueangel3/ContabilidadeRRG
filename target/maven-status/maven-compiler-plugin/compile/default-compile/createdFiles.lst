@@ -3,6 +3,7 @@ com\rrg\contabilidade\model\dao\PermissaoDAO.class
 com\rrg\contabilidade\model\Empresa.class
 com\rrg\contabilidade\model\dao\PermissaoDeUsuarioDAO.class
 com\rrg\contabilidade\CadastroDeEmpresa.class
+com\rrg\contabilidade\ProgramaPrincipal$1.class
 com\rrg\contabilidade\util\CriadorDasTabelasDoBancoDeDadosEmpresa.class
 com\rrg\contabilidade\util\GeradorDosPlanosDeContasPadrao.class
 com\rrg\contabilidade\util\CriadorDasTabelasDoBancoDeDadosGeral.class
@@ -13,6 +14,7 @@ com\rrg\contabilidade\model\Papel.class
 com\rrg\contabilidade\ProgramaPrincipal.class
 com\rrg\contabilidade\util\ConfiguracaoBanco.class
 com\rrg\contabilidade\model\Usuario.class
+com\rrg\contabilidade\controller\EmpresaController.class
 com\rrg\contabilidade\util\InicializadorDeBancoDeDadosEmpresa.class
 com\rrg\contabilidade\CadastroDeUsuarios.class
 com\rrg\contabilidade\util\AbreBancoGeral.class

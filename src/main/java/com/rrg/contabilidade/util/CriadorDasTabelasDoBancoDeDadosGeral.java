@@ -1,10 +1,11 @@
 package com.rrg.contabilidade.util;
 
+import com.rrg.contabilidade.controller.EmpresaController;
 import com.rrg.contabilidade.model.Empresa;
-import com.rrg.contabilidade.model.dao.EmpresaDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import javax.swing.JOptionPane;
 
 /**
@@ -48,24 +49,32 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
             GeradorDasOperacoes geradorDasOperacoes = new GeradorDasOperacoes(stmt);
             geradorDasOperacoes.gerarOperacoes();
 
-            // Dentro do CriadorDasTabelasDoBancoDeDadosGeral, após gerar planos e papeis
-            EmpresaDAO empresaDAO = new EmpresaDAO();
+            // Dentro do CriadorDasTabelasDoBancoDeDadosGeral, após gerar planos, papeis e operações
+            EmpresaController empresaController = new EmpresaController();
+            String cnpjFicticio = "99999999999999";
 
-            // Verifica se já existe a empresa fictícia
-            String cnpjFicticio = "99999999999999"; // ou qualquer que você queira
-            if (empresaDAO.buscarPorCnpj(cnpjFicticio) == null) {
-                Empresa empresaFicticia = new Empresa();
-                empresaFicticia.setCnpj(cnpjFicticio);
-                empresaFicticia.setRazao("Empresa Fictícia");
-                empresaFicticia.setEndereco("Rua Exemplo, 123");
-                empresaFicticia.setResponsavel("Administrador");
-                empresaFicticia.setTelefoneEmpresa("0000-0000");
-                empresaFicticia.setTelefoneResponsavel("0000-0000");
+            try {
+                Optional<Empresa> existente = empresaController.buscarEmpresaPorCnpj(cnpjFicticio);
 
-                empresaDAO.inserir(empresaFicticia);
+                if (existente.isEmpty()) {
+                    Empresa empresaFicticia = new Empresa();
+                    empresaFicticia.setCnpj(cnpjFicticio);
+                    empresaFicticia.setRazao("Empresa Fictícia");
+                    empresaFicticia.setEndereco("Rua Exemplo, 123");
+                    empresaFicticia.setResponsavel("Administrador");
+                    empresaFicticia.setTelefoneEmpresa("0000-0000");
+                    empresaFicticia.setTelefoneResponsavel("0000-0000");
 
-                // Também cria o banco da empresa fictícia
-                InicializadorDeBancoDeDadosEmpresa.verificarOuCriarBancoEmpresa(cnpjFicticio);
+                    // Usa o controller para inserir
+                    empresaController.inserirEmpresa(empresaFicticia);
+
+                    // Cria o banco da empresa
+                    InicializadorDeBancoDeDadosEmpresa.verificarOuCriarBancoEmpresa(cnpjFicticio);
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro ao criar empresa fictícia: " + e.getMessage());
+                e.printStackTrace();
             }
 
             // Outras tabelas futuras...

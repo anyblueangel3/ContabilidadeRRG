@@ -9,9 +9,9 @@ import java.awt.*;
 import java.util.Optional;
 
 /**
- * 
+ *
  * @author Ronaldo Rodrigues Godoi e Chat GPT
- * 
+ *
  * Painel de cadastro de empresas MVC: View + Controller
  */
 public class CadastroDeEmpresa extends JPanel {
@@ -125,17 +125,10 @@ public class CadastroDeEmpresa extends JPanel {
     }
 
     private void definirEventos() {
-        // Botão Salvar (apenas criação)
         btSalvar.addActionListener(e -> {
             String cnpj = tfCnpj.getText().trim();
             if (cnpj.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "CNPJ é obrigatório.", "Atenção", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            Optional<Empresa> existente = controller.buscarEmpresaPorCnpj(cnpj);
-            if (existente.isPresent()) {
-                JOptionPane.showMessageDialog(this, "Empresa já existe. Use Alterar.", "Atenção", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -146,15 +139,23 @@ public class CadastroDeEmpresa extends JPanel {
             empresa.setTelefoneEmpresa(tfTelEmpresa.getText().trim());
             empresa.setTelefoneResponsavel(tfTelResponsavel.getText().trim());
 
-            controller.inserirEmpresa(empresa);
+            if (tfCnpj.isEditable()) { // inserção
+                Optional<Empresa> existente = controller.buscarEmpresaPorCnpj(cnpj);
+                if (existente.isPresent()) {
+                    JOptionPane.showMessageDialog(this, "Empresa já existe. Use Alterar.", "Atenção", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
 
-            // Criar banco da empresa apenas na inserção
-            InicializadorDeBancoDeDadosEmpresa.verificarOuCriarBancoEmpresa(cnpj);
+                controller.inserirEmpresa(empresa);
+                InicializadorDeBancoDeDadosEmpresa.verificarOuCriarBancoEmpresa(cnpj);
+            } else { // atualização
+                controller.atualizarEmpresa(empresa);
+                // não cria banco, só atualiza
+            }
 
-            programaPrincipal.abrirTelaPrincipal();
+            JOptionPane.showMessageDialog(this, "Operação concluída com sucesso.");
         });
 
-        // Botão Alterar
         btAlterar.addActionListener(e -> {
             String cnpj = JOptionPane.showInputDialog(
                     this,
@@ -174,30 +175,20 @@ public class CadastroDeEmpresa extends JPanel {
             }
 
             this.empresa = existente.get();
-
-            // Preenche campos para alteração
-            tfCnpj.setText(empresa.getCnpj());
-            tfCnpj.setEditable(false); // não permite alterar CNPJ
-            tfRazao.setText(empresa.getRazao());
-            tfEndereco.setText(empresa.getEndereco());
-            tfResponsavel.setText(empresa.getResponsavel());
-            tfTelEmpresa.setText(empresa.getTelefoneEmpresa());
-            tfTelResponsavel.setText(empresa.getTelefoneResponsavel());
-
-            // Redefine o botão Salvar para atualizar
-            btSalvar.addActionListener(ev -> {
-                empresa.setRazao(tfRazao.getText().trim());
-                empresa.setEndereco(tfEndereco.getText().trim());
-                empresa.setResponsavel(tfResponsavel.getText().trim());
-                empresa.setTelefoneEmpresa(tfTelEmpresa.getText().trim());
-                empresa.setTelefoneResponsavel(tfTelResponsavel.getText().trim());
-
-                controller.atualizarEmpresa(empresa);
-                programaPrincipal.abrirTelaPrincipal();
-            });
+            preencherCamposParaAlteracao(empresa);
         });
 
-        // Botão Sair
         btSair.addActionListener(e -> programaPrincipal.abrirTelaPrincipal());
     }
+
+    private void preencherCamposParaAlteracao(Empresa empresa) {
+        tfCnpj.setText(empresa.getCnpj());
+        tfCnpj.setEditable(false); // não permite alterar CNPJ
+        tfRazao.setText(empresa.getRazao());
+        tfEndereco.setText(empresa.getEndereco());
+        tfResponsavel.setText(empresa.getResponsavel());
+        tfTelEmpresa.setText(empresa.getTelefoneEmpresa());
+        tfTelResponsavel.setText(empresa.getTelefoneResponsavel());
+    }
+
 }

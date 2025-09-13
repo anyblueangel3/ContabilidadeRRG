@@ -22,7 +22,7 @@ public class ProgramaPrincipal extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        
+
         // Evita fechamento automático pelo "X" da janela
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -110,12 +110,19 @@ public class ProgramaPrincipal extends JFrame {
      * Fecha o sistema de forma padronizada
      */
     public void sairDoSistema() {
-        int opcao = JOptionPane.showConfirmDialog(
+        Object[] opcoes = {"Sim", "Não"};
+
+        int opcao = JOptionPane.showOptionDialog(
                 this,
                 "Deseja realmente sair do sistema?",
                 "Confirmação",
-                JOptionPane.YES_NO_OPTION
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcoes,
+                opcoes[0]
         );
+
         if (opcao == JOptionPane.YES_OPTION) {
             dispose(); // fecha janela principal
             System.exit(0); // encerra aplicação
