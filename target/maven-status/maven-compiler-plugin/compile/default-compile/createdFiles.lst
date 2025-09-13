@@ -27,4 +27,3 @@ com\rrg\contabilidade\controller\UsuarioController.class
 com\rrg\contabilidade\Contabilidade.class
 com\rrg\contabilidade\model\OperacaoDoPapel.class
 com\rrg\contabilidade\model\dao\EmpresaDAO.class
-com\rrg\model\Usuarios.class

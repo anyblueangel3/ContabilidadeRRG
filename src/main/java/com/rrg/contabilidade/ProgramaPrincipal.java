@@ -20,9 +20,20 @@ public class ProgramaPrincipal extends JFrame {
     public ProgramaPrincipal() {
         setTitle("Sistema de Contabilidade");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        
+        // Evita fechamento automático pelo "X" da janela
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        // Garante que o fechamento pelo "X" passe pelo método sairDoSistema()
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                sairDoSistema();
+            }
+        });
+
     }
 
     /**
@@ -43,26 +54,26 @@ public class ProgramaPrincipal extends JFrame {
      * usuário possui ID (novo usuário) ou não.
      */
     public void abrirTelaPrincipal() {
-    if (!SessaoDeUsuario.isLogado()) {
-        JOptionPane.showMessageDialog(null, "Nenhum usuário logado. Faça login novamente.");
-        return;
+        if (!SessaoDeUsuario.isLogado()) {
+            JOptionPane.showMessageDialog(null, "Nenhum usuário logado. Faça login novamente.");
+            dispose();
+            return;
+        }
+
+        Usuario usuario = SessaoDeUsuario.getUsuarioLogado();
+
+        // Atualiza título com o usuário logado
+        setTitle("Sistema Contabilidade - Usuário: " + usuario.getLogin());
+
+        // Define a barra de menus principal
+        setJMenuBar(new MenuPrincipal(this));
+
+        // Carrega o painel principal (bem-vindo + conteúdo inicial)
+        JPanel painel = criarPainelPrincipal(usuario);
+        setPainelCentral(painel);
+
+        setVisible(true);
     }
-
-    Usuario usuario = SessaoDeUsuario.getUsuarioLogado();
-
-    // Atualiza título com o usuário logado
-    setTitle("Sistema Contabilidade - Usuário: " + usuario.getLogin());
-
-    // Define a barra de menus principal
-    setJMenuBar(new MenuPrincipal(this));
-
-    // Carrega o painel principal (bem-vindo + conteúdo inicial)
-    JPanel painel = criarPainelPrincipal(usuario);
-    setPainelCentral(painel);
-
-    setVisible(true);
-}
-
 
     /**
      * Cria o painel principal do sistema (painel de boas-vindas e menu básico)
@@ -93,6 +104,22 @@ public class ProgramaPrincipal extends JFrame {
         setPainelCentral(painelCadastro);
         setTitle("Cadastro de Usuário");
         setVisible(true);
+    }
+
+    /**
+     * Fecha o sistema de forma padronizada
+     */
+    public void sairDoSistema() {
+        int opcao = JOptionPane.showConfirmDialog(
+                this,
+                "Deseja realmente sair do sistema?",
+                "Confirmação",
+                JOptionPane.YES_NO_OPTION
+        );
+        if (opcao == JOptionPane.YES_OPTION) {
+            dispose(); // fecha janela principal
+            System.exit(0); // encerra aplicação
+        }
     }
 
 }

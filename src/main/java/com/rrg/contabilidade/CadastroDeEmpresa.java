@@ -1,19 +1,24 @@
 package com.rrg.contabilidade;
 
+import com.rrg.contabilidade.controller.EmpresaController;
 import com.rrg.contabilidade.model.Empresa;
-import com.rrg.contabilidade.model.dao.EmpresaDAO;
 import com.rrg.contabilidade.util.InicializadorDeBancoDeDadosEmpresa;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 /**
- * Painel de cadastro de empresas MVC: View + Controller leve
+ * 
+ * @author Ronaldo Rodrigues Godoi e Chat GPT
+ * 
+ * Painel de cadastro de empresas MVC: View + Controller
  */
 public class CadastroDeEmpresa extends JPanel {
 
     private ProgramaPrincipal programaPrincipal;
     private Empresa empresa;
+    private EmpresaController controller;
 
     private JTextField tfCnpj;
     private JTextField tfRazao;
@@ -22,10 +27,13 @@ public class CadastroDeEmpresa extends JPanel {
     private JTextField tfTelEmpresa;
     private JTextField tfTelResponsavel;
     private JButton btSalvar;
+    private JButton btAlterar;
+    private JButton btSair;
 
     public CadastroDeEmpresa(ProgramaPrincipal programaPrincipal, Empresa empresa) {
         this.programaPrincipal = programaPrincipal;
         this.empresa = empresa != null ? empresa : new Empresa();
+        this.controller = new EmpresaController();
 
         inicializarComponentes();
     }
@@ -46,12 +54,14 @@ public class CadastroDeEmpresa extends JPanel {
         gbc.gridwidth = 1;
         gbc.gridy++;
 
+        // CNPJ
         add(new JLabel("CNPJ:"), gbc);
         tfCnpj = new JTextField(20);
         tfCnpj.setText(empresa.getCnpj() != null ? empresa.getCnpj() : "");
         gbc.gridx = 1;
         add(tfCnpj, gbc);
 
+        // Razão Social
         gbc.gridx = 0;
         gbc.gridy++;
         add(new JLabel("Razão Social:"), gbc);
@@ -60,6 +70,7 @@ public class CadastroDeEmpresa extends JPanel {
         gbc.gridx = 1;
         add(tfRazao, gbc);
 
+        // Endereço
         gbc.gridx = 0;
         gbc.gridy++;
         add(new JLabel("Endereço:"), gbc);
@@ -68,6 +79,7 @@ public class CadastroDeEmpresa extends JPanel {
         gbc.gridx = 1;
         add(tfEndereco, gbc);
 
+        // Responsável
         gbc.gridx = 0;
         gbc.gridy++;
         add(new JLabel("Responsável:"), gbc);
@@ -76,6 +88,7 @@ public class CadastroDeEmpresa extends JPanel {
         gbc.gridx = 1;
         add(tfResponsavel, gbc);
 
+        // Telefone Empresa
         gbc.gridx = 0;
         gbc.gridy++;
         add(new JLabel("Telefone Empresa:"), gbc);
@@ -84,6 +97,7 @@ public class CadastroDeEmpresa extends JPanel {
         gbc.gridx = 1;
         add(tfTelEmpresa, gbc);
 
+        // Telefone Responsável
         gbc.gridx = 0;
         gbc.gridy++;
         add(new JLabel("Telefone Responsável:"), gbc);
@@ -92,48 +106,98 @@ public class CadastroDeEmpresa extends JPanel {
         gbc.gridx = 1;
         add(tfTelResponsavel, gbc);
 
+        // Botões
         gbc.gridx = 0;
         gbc.gridy++;
         gbc.gridwidth = 2;
         btSalvar = new JButton("Salvar");
         add(btSalvar, gbc);
 
+        gbc.gridy++;
+        btAlterar = new JButton("Alterar");
+        add(btAlterar, gbc);
+
+        gbc.gridy++;
+        btSair = new JButton("Sair do Cadastro de Empresas");
+        add(btSair, gbc);
+
         definirEventos();
     }
 
     private void definirEventos() {
+        // Botão Salvar (apenas criação)
         btSalvar.addActionListener(e -> {
             String cnpj = tfCnpj.getText().trim();
-            String razao = tfRazao.getText().trim();
-            String endereco = tfEndereco.getText().trim();
-            String responsavel = tfResponsavel.getText().trim();
-            String telEmpresa = tfTelEmpresa.getText().trim();
-            String telResponsavel = tfTelResponsavel.getText().trim();
+            if (cnpj.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "CNPJ é obrigatório.", "Atenção", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-            if (cnpj.isEmpty() || razao.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "CNPJ e Razão Social são obrigatórios.", "Atenção", JOptionPane.WARNING_MESSAGE);
+            Optional<Empresa> existente = controller.buscarEmpresaPorCnpj(cnpj);
+            if (existente.isPresent()) {
+                JOptionPane.showMessageDialog(this, "Empresa já existe. Use Alterar.", "Atenção", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             empresa.setCnpj(cnpj);
-            empresa.setRazao(razao);
-            empresa.setEndereco(endereco);
-            empresa.setResponsavel(responsavel);
-            empresa.setTelefoneEmpresa(telEmpresa);
-            empresa.setTelefoneResponsavel(telResponsavel);
+            empresa.setRazao(tfRazao.getText().trim());
+            empresa.setEndereco(tfEndereco.getText().trim());
+            empresa.setResponsavel(tfResponsavel.getText().trim());
+            empresa.setTelefoneEmpresa(tfTelEmpresa.getText().trim());
+            empresa.setTelefoneResponsavel(tfTelResponsavel.getText().trim());
 
-            EmpresaDAO dao = new EmpresaDAO();
-            if (dao.buscarPorCnpj(cnpj) == null) {
-                dao.inserir(empresa);
+            controller.inserirEmpresa(empresa);
 
-                // Criar banco da empresa com o mesmo CNPJ
-                InicializadorDeBancoDeDadosEmpresa.verificarOuCriarBancoEmpresa(cnpj);
-
-            } else {
-                dao.atualizar(empresa);
-            }
+            // Criar banco da empresa apenas na inserção
+            InicializadorDeBancoDeDadosEmpresa.verificarOuCriarBancoEmpresa(cnpj);
 
             programaPrincipal.abrirTelaPrincipal();
         });
+
+        // Botão Alterar
+        btAlterar.addActionListener(e -> {
+            String cnpj = JOptionPane.showInputDialog(
+                    this,
+                    "Informe o CNPJ da empresa que deseja alterar:",
+                    "Alterar Empresa",
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (cnpj == null || cnpj.trim().isEmpty()) {
+                return; // cancelou
+            }
+
+            Optional<Empresa> existente = controller.buscarEmpresaPorCnpj(cnpj.trim());
+            if (existente.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Empresa não encontrada.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            this.empresa = existente.get();
+
+            // Preenche campos para alteração
+            tfCnpj.setText(empresa.getCnpj());
+            tfCnpj.setEditable(false); // não permite alterar CNPJ
+            tfRazao.setText(empresa.getRazao());
+            tfEndereco.setText(empresa.getEndereco());
+            tfResponsavel.setText(empresa.getResponsavel());
+            tfTelEmpresa.setText(empresa.getTelefoneEmpresa());
+            tfTelResponsavel.setText(empresa.getTelefoneResponsavel());
+
+            // Redefine o botão Salvar para atualizar
+            btSalvar.addActionListener(ev -> {
+                empresa.setRazao(tfRazao.getText().trim());
+                empresa.setEndereco(tfEndereco.getText().trim());
+                empresa.setResponsavel(tfResponsavel.getText().trim());
+                empresa.setTelefoneEmpresa(tfTelEmpresa.getText().trim());
+                empresa.setTelefoneResponsavel(tfTelResponsavel.getText().trim());
+
+                controller.atualizarEmpresa(empresa);
+                programaPrincipal.abrirTelaPrincipal();
+            });
+        });
+
+        // Botão Sair
+        btSair.addActionListener(e -> programaPrincipal.abrirTelaPrincipal());
     }
 }

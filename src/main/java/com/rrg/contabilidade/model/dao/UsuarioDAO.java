@@ -152,4 +152,5 @@ public class UsuarioDAO {
                 rs.getTimestamp("data_ultimo_acesso")
         );
     }
+
 }

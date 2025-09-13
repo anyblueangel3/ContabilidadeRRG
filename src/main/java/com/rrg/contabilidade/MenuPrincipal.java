@@ -37,27 +37,11 @@ public class MenuPrincipal extends JMenuBar {
         menuCadastros.add(miUsuarios);
         menuCadastros.add(miEmpresas);
 
-        // ===== Item Sair =====
+// ===== Item Sair =====
         JMenuItem miSair = new JMenuItem("Sair");
-        miSair.addActionListener(e -> {
-
-            Object[] opcoes = {"Sim", "Não"};
-            int confirm = JOptionPane.showOptionDialog(
-                    programaPrincipal,
-                    "Deseja realmente sair do sistema?",
-                    "Confirmação",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    opcoes,
-                    opcoes[1] // valor padrão selecionado = "Não"
-            );
-
-            if (confirm == JOptionPane.YES_OPTION) {
-                System.exit(0);
-            }
-        });
-        menuCadastros.addSeparator(); // separador visual antes do Sair
+        miSair.addActionListener(e -> programaPrincipal.sairDoSistema());
+        
+        menuCadastros.addSeparator();
         menuCadastros.add(miSair);
 
         // ===== Menu Operações =====

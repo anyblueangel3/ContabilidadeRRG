@@ -12,11 +12,11 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * 
+ *
  * @author Ronaldo Rodrigues Godoi e Chat GPT
- * 
+ *
  * Painel de cadastro de usuários MVC: View (UI) + Controller leve
- * 
+ *
  */
 public class CadastroDeUsuarios extends JPanel {
 
@@ -28,11 +28,13 @@ public class CadastroDeUsuarios extends JPanel {
     private JPasswordField pfSenha;
     private JComboBox<Papel> cbPapel;
     private JButton btSalvar;
+    private JButton btAlterar;
+    private JButton btSair;
 
     public CadastroDeUsuarios(ProgramaPrincipal programaPrincipal, Usuario usuario) {
         this.programaPrincipal = programaPrincipal;
         this.usuario = usuario != null ? usuario : new Usuario();
-
+        
         inicializarComponentes();
     }
 
@@ -95,6 +97,18 @@ public class CadastroDeUsuarios extends JPanel {
         btSalvar = new JButton("Salvar");
         add(btSalvar, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.gridwidth = 2;
+        btAlterar = new JButton("Alterar");
+        add(btAlterar, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy++;
+        gbc.gridwidth = 2;
+        btSair = new JButton("Sair do Cadastro de Usuários");
+        add(btSair, gbc);
+
         definirEventos();
     }
 
@@ -149,8 +163,43 @@ public class CadastroDeUsuarios extends JPanel {
                 dao.atualizar(usuario);
             }
 
-            // Retorna ao painel principal
-            SessaoDeUsuario.logar(usuario);
+        });
+
+        btAlterar.addActionListener(e -> {
+            String login = JOptionPane.showInputDialog(
+                    this,
+                    "Informe o login do usuário que deseja alterar:",
+                    "Alterar Usuário",
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (login == null || login.trim().isEmpty()) {
+                return; // cancelou ou não digitou
+            }
+
+            UsuarioDAO dao = new UsuarioDAO();
+            Usuario usuarioExistente = dao.buscarPorLogin(login.trim());
+
+            if (usuarioExistente == null) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Usuário não encontrado.",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            // Preenche campos com os dados existentes
+            this.usuario = usuarioExistente; // atualiza a referência
+            tfNome.setText(usuarioExistente.getNome());
+            tfLogin.setText(usuarioExistente.getLogin());
+            pfSenha.setText(""); // por segurança, senha não é exibida
+            selecionarPapel(usuarioExistente.getPapel());
+        });
+
+        btSair.addActionListener(e -> {
+            // Retorna ao painel principal existente
             programaPrincipal.abrirTelaPrincipal();
         });
     }

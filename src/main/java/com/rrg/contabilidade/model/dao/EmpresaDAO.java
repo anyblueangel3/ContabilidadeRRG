@@ -6,7 +6,7 @@ import com.rrg.contabilidade.util.AbreBancoGeral;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
+import java.util.Optional;
 
 /**
  * DAO para gerenciar empresas no banco geral.
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 public class EmpresaDAO {
 
     // Inserir nova empresa
-    public void inserir(Empresa empresa) {
+    public void inserir(Empresa empresa) throws SQLException {
         String sql = "INSERT INTO empresas (cnpj, razao, endereco, responsavel, telefone_empresa, telefone_responsavel) "
                    + "VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -29,16 +29,11 @@ public class EmpresaDAO {
             ps.setString(6, empresa.getTelefoneResponsavel());
 
             ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Empresa inserida com sucesso.");
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao inserir empresa: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
     // Atualizar empresa
-    public void atualizar(Empresa empresa) {
+    public void atualizar(Empresa empresa) throws SQLException {
         String sql = "UPDATE empresas SET razao=?, endereco=?, responsavel=?, telefone_empresa=?, telefone_responsavel=? "
                    + "WHERE cnpj=?";
         try (Connection conexao = AbreBancoGeral.obterConexao();
@@ -52,16 +47,11 @@ public class EmpresaDAO {
             ps.setString(6, empresa.getCnpj());
 
             ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Empresa atualizada com sucesso.");
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao atualizar empresa: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
     // Buscar empresa por CNPJ
-    public Empresa buscarPorCnpj(String cnpj) {
+    public Optional<Empresa> buscarPorCnpj(String cnpj) throws SQLException {
         String sql = "SELECT * FROM empresas WHERE cnpj=?";
         try (Connection conexao = AbreBancoGeral.obterConexao();
              PreparedStatement ps = conexao.prepareStatement(sql)) {
@@ -69,7 +59,7 @@ public class EmpresaDAO {
             ps.setString(1, cnpj);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new Empresa(
+                    Empresa empresa = new Empresa(
                             rs.getString("cnpj"),
                             rs.getString("razao"),
                             rs.getString("endereco"),
@@ -77,18 +67,15 @@ public class EmpresaDAO {
                             rs.getString("telefone_empresa"),
                             rs.getString("telefone_responsavel")
                     );
+                    return Optional.of(empresa);
                 }
             }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao buscar empresa: " + e.getMessage());
-            e.printStackTrace();
         }
-        return null;
+        return Optional.empty();
     }
 
     // Listar todas as empresas
-    public List<Empresa> listarTodos() {
+    public List<Empresa> listarTodos() throws SQLException {
         List<Empresa> lista = new ArrayList<>();
         String sql = "SELECT * FROM empresas ORDER BY razao";
         try (Connection conexao = AbreBancoGeral.obterConexao();
@@ -105,10 +92,6 @@ public class EmpresaDAO {
                         rs.getString("telefone_responsavel")
                 ));
             }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao listar empresas: " + e.getMessage());
-            e.printStackTrace();
         }
         return lista;
     }
