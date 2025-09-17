@@ -33,4 +33,12 @@ public class Papel {
     public void setNomePapel(String nomePapel) {
         this.nomePapel = nomePapel;
     }
+
+    @Override
+    public String toString() {
+        return "Papel{" + "nomePapel=" + nomePapel + '}';
+    }
+    
+    
+    
 }

@@ -8,11 +8,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
+ * Controller para operações de Papel.
+ * Regras de negócio + mensagens para o usuário.
  *
- * @author Ronaldo Rodrigues Godoi e Chat GPT
- *
- * Controller para operações de Papel. Regras de negócio + mensagens para o
- * usuário.
+ * @author Ronaldo
  */
 public class PapelController {
 
@@ -32,6 +31,7 @@ public class PapelController {
         }
     }
 
+    // Método usado no CadastroDeUsuarios
     public List<Papel> listarTodosPapeis() {
         try {
             return papelDAO.listarTodos();
@@ -46,23 +46,19 @@ public class PapelController {
         try {
             return papelDAO.buscarPorId(id);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Erro ao buscar papel: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar papel: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
 
-    // dentro de com.rrg.contabilidade.controller.PapelController
     public Papel buscarPorNome(String nome) {
         try {
             return papelDAO.buscarPorNome(nome);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,
-                    "Erro ao buscar papel: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao buscar papel: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
-
 }

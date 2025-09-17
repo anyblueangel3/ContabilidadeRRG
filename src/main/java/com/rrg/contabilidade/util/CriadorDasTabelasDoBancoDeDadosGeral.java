@@ -48,6 +48,9 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
 
             GeradorDasOperacoes geradorDasOperacoes = new GeradorDasOperacoes(stmt);
             geradorDasOperacoes.gerarOperacoes();
+            
+            GeradorDasOperacoesPapeis gerarOperacoesAdmin = new GeradorDasOperacoesPapeis(stmt);
+            gerarOperacoesAdmin.gerarOperacoes();
 
             // Dentro do CriadorDasTabelasDoBancoDeDadosGeral, após gerar planos, papeis e operações
             EmpresaController empresaController = new EmpresaController();
@@ -73,15 +76,18 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
                 }
 
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Erro ao criar empresa fictícia: " + e.getMessage());
+                JOptionPane.showMessageDialog(null,
+                        "Erro ao criar empresa fictícia: " + e.getMessage());
                 e.printStackTrace();
             }
 
             // Outras tabelas futuras...
-            JOptionPane.showMessageDialog(null, "Tabelas criadas com sucesso.");
+            JOptionPane.showMessageDialog(null,
+                    "Tabelas criadas com sucesso.");
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao criar tabelas:\n " + e.getMessage());
+            JOptionPane.showMessageDialog(null,
+                    "Erro ao criar tabelas:\n " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -120,7 +126,8 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
         sql = """
         CREATE TABLE IF NOT EXISTS operacoes (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            operacao VARCHAR(100) NOT NULL UNIQUE
+            operacao VARCHAR(100) NOT NULL UNIQUE,
+            descricao VARCHAR(200) NOT NULL UNIQUE
         );
         """;
         stmt.executeUpdate(sql);
@@ -200,7 +207,7 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
                         id_periodo INT NOT NULL,
                         data_lancamento DATE NOT NULL,
                         historico TEXT NOT NULL,
-                        usuario_id INT NOT NULL,
+                        id_usuario INT NOT NULL,
                         FOREIGN KEY (id_periodo) REFERENCES periodos(id)
                      );
                      """;

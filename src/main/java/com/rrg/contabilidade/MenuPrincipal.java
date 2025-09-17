@@ -15,6 +15,7 @@ import javax.swing.*;
 public class MenuPrincipal extends JMenuBar {
 
     private ProgramaPrincipal programaPrincipal;
+    private Usuario usuario = SessaoDeUsuario.getUsuarioLogado();
 
     public MenuPrincipal(ProgramaPrincipal programaPrincipal) {
         this.programaPrincipal = programaPrincipal;
@@ -22,22 +23,31 @@ public class MenuPrincipal extends JMenuBar {
         // ===== Menu Cadastros =====
         JMenu menuCadastros = new JMenu("Cadastros");
 
-        JMenuItem miUsuarios = new JMenuItem("Cadastro de Usuários");
+        JMenuItem miUsuarios = new JMenuItem("Cadastro de Usuários e suas Operações");
         miUsuarios.addActionListener(e -> {
-            CadastroDeUsuarios cadastroUsuarios = new CadastroDeUsuarios(programaPrincipal, null);
+            CadastroDeUsuarios cadastroUsuarios = new CadastroDeUsuarios(programaPrincipal, null, false);
             programaPrincipal.setPainelCentral(cadastroUsuarios);
         });
 
         JMenuItem miEmpresas = new JMenuItem("Cadastro de Empresas");
         miEmpresas.addActionListener(e -> {
-            CadastroDeEmpresa cadastroEmpresa = new CadastroDeEmpresa(programaPrincipal, null);
+            CadastroDeEmpresa cadastroEmpresa = 
+                    new CadastroDeEmpresa(programaPrincipal, null);
             programaPrincipal.setPainelCentral(cadastroEmpresa);
+        });
+        
+        JMenuItem miPapeis = new JMenuItem("Cadastro de Papéis e suas Operações");
+        miPapeis.addActionListener( e -> {
+            CadastroDePapeis cadastroDePapeis = 
+                    new CadastroDePapeis(programaPrincipal, null);
+            programaPrincipal.setPainelCentral(cadastroDePapeis);
         });
 
         menuCadastros.add(miUsuarios);
         menuCadastros.add(miEmpresas);
+        menuCadastros.add(miPapeis);
 
-// ===== Item Sair =====
+        // ===== Item Sair =====
         JMenuItem miSair = new JMenuItem("Sair");
         miSair.addActionListener(e -> programaPrincipal.sairDoSistema());
         
@@ -49,8 +59,7 @@ public class MenuPrincipal extends JMenuBar {
 
         JMenuItem miLancamentos = new JMenuItem("Lançamentos");
         miLancamentos.addActionListener(e -> {
-            // TODO: implementar classe de lançamentos
-            // programaPrincipal.setPainelCentral(new LancamentosPanel());
+            programaPrincipal.setPainelCentral(new Lancamentos());
         });
 
         JMenuItem miAre = new JMenuItem("ARE");
@@ -89,11 +98,28 @@ public class MenuPrincipal extends JMenuBar {
         menuRelatorios.add(miBalanco);
         menuRelatorios.add(miDre);
         menuRelatorios.add(miPlanoContas);
+        
+        // ===== Menu Manutenção =====
+        JMenu menuManutencao = new JMenu("Manutenção");
+        
+        JMenuItem miBackup = new JMenuItem("Backup");
+        miBackup.addActionListener( e -> {
+            // TODO: implementar Backup
+        });
+        
+        JMenuItem miIndices = new JMenuItem("Indices");
+        miIndices.addActionListener(e -> {
+            // TODO: implementar ou excluir
+        });
+        
+        menuManutencao.add(miBackup);
+        menuManutencao.add(miIndices);
 
         // ===== Adiciona menus à barra =====
         add(menuCadastros);
         add(menuOperacoes);
         add(menuRelatorios);
+        add(menuManutencao);
     }
 
 }

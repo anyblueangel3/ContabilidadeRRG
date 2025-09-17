@@ -1,6 +1,7 @@
 package com.rrg.contabilidade.controller;
 
 import com.rrg.contabilidade.model.Usuario;
+import com.rrg.contabilidade.model.Operacao;
 import com.rrg.contabilidade.model.dao.UsuarioDAO;
 
 import javax.swing.*;
@@ -50,10 +51,23 @@ public class UsuarioController {
         }
     }
 
-    // Buscar usuário por login
+    // Buscar usuário por login (carrega também as operações via OperacaoController)
     public Usuario buscarUsuarioPorLogin(String login) {
         try {
-            return usuarioDAO.buscarPorLogin(login);
+            Usuario usuario = usuarioDAO.buscarPorLogin(login);
+            if (usuario != null) {
+                try {
+                    OperacaoController operacaoController = new OperacaoController();
+                    List<Operacao> ops = operacaoController.buscarOperacoesPorUsuario(usuario.getId());
+                    usuario.setOperacoes(ops);
+                } catch (Exception ex) {
+                    // se ocorrer erro ao carregar operações, registra e continua
+                    JOptionPane.showMessageDialog(null, "Aviso: falha ao carregar operações do usuário: " + ex.getMessage());
+                    ex.printStackTrace();
+                    usuario.setOperacoes(List.of());
+                }
+            }
+            return usuario;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao buscar usuário: " + e.getMessage());
             e.printStackTrace();
@@ -61,14 +75,37 @@ public class UsuarioController {
         }
     }
 
-    // Listar todos os usuários
+    // Listar todos os usuários (cada usuário terá suas operações carregadas)
     public List<Usuario> listarTodosUsuarios() {
         try {
-            return usuarioDAO.listarTodos();
+            List<Usuario> usuarios = usuarioDAO.listarTodos();
+            OperacaoController operacaoController = new OperacaoController();
+            for (Usuario u : usuarios) {
+                try {
+                    List<Operacao> ops = operacaoController.buscarOperacoesPorUsuario(u.getId());
+                    u.setOperacoes(ops);
+                } catch (Exception ex) {
+                    // em caso de erro em uma conta, garantir que não fique nulo
+                    ex.printStackTrace();
+                    u.setOperacoes(List.of());
+                }
+            }
+            return usuarios;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao listar usuários: " + e.getMessage());
             e.printStackTrace();
             return List.of(); // retorna lista vazia em caso de erro
         }
     }
+
+    public void atribuirOperacoes(Usuario usuario) {
+        try {
+            usuarioDAO.atribuirOperacoes(usuario);
+            JOptionPane.showMessageDialog(null, "Operações atribuídas com sucesso ao usuário.");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao atribuir operações: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }

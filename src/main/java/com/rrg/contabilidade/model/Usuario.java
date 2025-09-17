@@ -1,6 +1,8 @@
 package com.rrg.contabilidade.model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,6 +19,15 @@ public class Usuario {
     private String status;
     private Timestamp dataCriacao;
     private Timestamp dataUltimoAcesso;
+    private List<Operacao> operacoes = new ArrayList<>();
+
+    public List<Operacao> getOperacoes() {
+        return operacoes;
+    }
+
+    public void setOperacoes(List<Operacao> operacoes) {
+        this.operacoes = operacoes;
+    }
     
     public Usuario() {};
     

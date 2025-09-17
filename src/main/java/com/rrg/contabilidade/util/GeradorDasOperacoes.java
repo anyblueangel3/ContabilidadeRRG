@@ -25,7 +25,7 @@ public class GeradorDasOperacoes {
                 "FAZER_LANCAMENTOS",
                 "FAZER_MANUTENCAO_DOS_USUARIOS",
                 "EMITIR_DRE",
-                "EMITIR_BALANÇO",
+                "EMITIR_BALANCO",
                 "EMITIR_BALANCETE",
                 "FAZER_ARE"
             };
@@ -40,8 +40,9 @@ public class GeradorDasOperacoes {
                     }
                 }
 
-                // Insere a operação
-                String sqlInserir = "INSERT INTO operacoes (operacao) VALUES ('" + operacao + "')";
+                // Insere a operação com descrição
+                String sqlInserir = "INSERT INTO operacoes (operacao, descricao) VALUES ('" 
+                        + operacao + "', '" + gerarDescricao(operacao) + "')";
                 stmt.executeUpdate(sqlInserir);
                 System.out.println("Operação '" + operacao + "' inserida com sucesso.");
             }
@@ -52,5 +53,20 @@ public class GeradorDasOperacoes {
             JOptionPane.showMessageDialog(null, "Erro ao gerar operações padrão: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Retorna uma descrição amigável da operação para exibição
+     */
+    private String gerarDescricao(String operacao) {
+        return switch (operacao) {
+            case "FAZER_LANCAMENTOS" -> "Permite realizar lançamentos contábeis";
+            case "FAZER_MANUTENCAO_DOS_USUARIOS" -> "Permite gerenciar usuários do sistema";
+            case "EMITIR_DRE" -> "Permite emitir o Demonstrativo de Resultados do Exercício (DRE)";
+            case "EMITIR_BALANCO" -> "Permite emitir o Balanço Patrimonial";
+            case "EMITIR_BALANCETE" -> "Permite emitir o Balancete contábil";
+            case "FAZER_ARE" -> "Permite realizar Apuração do Resultado do Exercício (ARE)";
+            default -> operacao; // fallback
+        };
     }
 }

@@ -73,7 +73,9 @@ public class Contabilidade extends JFrame {
             ProgramaPrincipal programa = new ProgramaPrincipal();
 
             if (login.isEmpty() || senha.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Informe login e senha.", "Atenção", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, 
+                        "Informe login e senha.",
+                        "Atenção", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -95,16 +97,18 @@ public class Contabilidade extends JFrame {
                 // Primeiro acesso: não há ADMIN
                 Usuario primeiroUsuario = new Usuario();
                 primeiroUsuario.setLogin(login);
+                primeiroUsuario.setSenha(senha); // será tratado no CadastroDeUsuarios
                 primeiroUsuario.setPapel(papelAdmin.getId());
-                primeiroUsuario.setSenha(senha); // será tratado depois no CRUD
+                primeiroUsuario.setSenha(senha); // será tratado no CadastroDeUsuarios
 
-                JOptionPane.showMessageDialog(this, "Nenhum ADMIN encontrado. A tela de cadastro de usuário será aberta.");
-                programa.abrirCadastroDeUsuarios(primeiroUsuario);
+                JOptionPane.showMessageDialog(this,
+                        "Nenhum ADMIN encontrado.\n A tela de cadastro de usuário será aberta.");
+                programa.abrirCadastroDeUsuarios(primeiroUsuario, true); // true = primeiro acesso
                 this.dispose();
                 return;
             }
 
-            // Há ADMIN, valida usuário
+            // Há ADMIN, valida usuário normalmente
             Usuario usuario = usuarioController.buscarUsuarioPorLogin(login);
 
             if (usuario == null) {
