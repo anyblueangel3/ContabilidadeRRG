@@ -59,7 +59,10 @@ public class MenuPrincipal extends JMenuBar {
 
         JMenuItem miLancamentos = new JMenuItem("Lançamentos");
         miLancamentos.addActionListener(e -> {
-            programaPrincipal.setPainelCentral(new Lancamentos());
+            programaPrincipal.setPainelCentral(new Lancamentos(programaPrincipal,
+                                                                null,
+                                                                null, 
+                                                                null));
         });
 
         JMenuItem miAre = new JMenuItem("ARE");

@@ -4,12 +4,13 @@ import com.rrg.contabilidade.model.Empresa;
 import com.rrg.contabilidade.model.Periodo;
 import com.rrg.contabilidade.model.Usuario;
 import com.rrg.contabilidade.util.SessaoDeUsuario;
+import javax.swing.JPanel;
 
 /**
  *
  * @author Ronaldo Rodrigues Godoi e Chat GPT
  */
-public class Lancamentos {
+public class Lancamentos extends JPanel {
     
     ProgramaPrincipal programaPrincipal;
     Usuario usuario;
