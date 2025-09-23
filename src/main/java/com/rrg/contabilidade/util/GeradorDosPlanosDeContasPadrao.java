@@ -53,29 +53,29 @@ public class GeradorDosPlanosDeContasPadrao {
             }
 
             // 2. Inserir contas do plano industrial
-            inserirConta("1", 1, "Ativo", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1", 1, "Ativo Circulante", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1.1", 1, "Caixa", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1.2", 1, "Bancos Conta Movimento", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1.3", 1, "Clientes", "A", "DEVEDORA", idPlano, true, true);
+            inserirConta("1", 1, "Ativo", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1", 1, "Ativo Circulante", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1.1", 1, "Caixa", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1.2", 1, "Bancos Conta Movimento", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1.3", 1, "Clientes", "ANALITICA", "DEVEDORA", idPlano, true, true);
 
-            inserirConta("2", 2, "Passivo", "S", "CREDORA", idPlano, true, true);
-            inserirConta("2.1", 2, "Passivo Circulante", "S", "CREDORA", idPlano, true, true);
-            inserirConta("2.1.1", 2, "Fornecedores", "A", "CREDORA", idPlano, true, true);
-            inserirConta("2.1.2", 2, "Empréstimos e Financiamentos", "A", "CREDORA", idPlano, true, true);
+            inserirConta("2", 2, "Passivo", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.1", 2, "Passivo Circulante", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.1.1", 2, "Fornecedores", "ANALITICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.1.2", 2, "Empréstimos e Financiamentos", "ANALITICA", "CREDORA", idPlano, true, true);
 
-            inserirConta("3", 3, "Patrimônio Líquido", "S", "CREDORA", idPlano, true, true);
-            inserirConta("3.1", 3, "Capital Social", "A", "CREDORA", idPlano, true, true);
+            inserirConta("3", 3, "Patrimônio Líquido", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("3.1", 3, "Capital Social", "ANALITICA", "CREDORA", idPlano, true, true);
 
-            inserirConta("4", 4, "Receita Operacional", "S", "CREDORA", idPlano, true, true);
-            inserirConta("4.1", 4, "Receita Bruta de Vendas", "A", "CREDORA", idPlano, true, true);
+            inserirConta("4", 4, "Receita Operacional", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("4.1", 4, "Receita Bruta de Vendas", "ANALITICA", "CREDORA", idPlano, true, true);
 
-            inserirConta("5", 5, "Custos dos Produtos Vendidos", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("5.1", 5, "Matéria-Prima Consumida", "A", "DEVEDORA", idPlano, true, true);
+            inserirConta("5", 5, "Custos dos Produtos Vendidos", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("5.1", 5, "Matéria-Prima Consumida", "ANALITICA", "DEVEDORA", idPlano, true, true);
 
-            inserirConta("6", 6, "Despesas Operacionais", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("6.1", 6, "Despesas Administrativas", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("6.2", 6, "Despesas Comerciais", "A", "DEVEDORA", idPlano, true, true);
+            inserirConta("6", 6, "Despesas Operacionais", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("6.1", 6, "Despesas Administrativas", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("6.2", 6, "Despesas Comerciais", "ANALITICA", "DEVEDORA", idPlano, true, true);
 
             JOptionPane.showMessageDialog(null, "Plano de contas Industrial gerado com sucesso.");
 
@@ -132,29 +132,29 @@ public class GeradorDosPlanosDeContasPadrao {
             }
 
             // 2) Inserir contas principais usando o método inserirConta
-            inserirConta("1", 1, "Ativo", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1", 1, "Ativo Circulante", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1.1", 1, "Caixa", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1.2", 1, "Bancos Conta Movimento", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1.3", 1, "Estoques de Mercadorias", "A", "DEVEDORA", idPlano, true, true);
+            inserirConta("1", 1, "Ativo", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1", 1, "Ativo Circulante", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1.1", 1, "Caixa", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1.2", 1, "Bancos Conta Movimento", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1.3", 1, "Estoques de Mercadorias", "ANALITICA", "DEVEDORA", idPlano, true, true);
 
-            inserirConta("2", 2, "Passivo", "S", "CREDORA", idPlano, true, true);
-            inserirConta("2.1", 2, "Passivo Circulante", "S", "CREDORA", idPlano, true, true);
-            inserirConta("2.1.1", 2, "Fornecedores", "A", "CREDORA", idPlano, true, true);
-            inserirConta("2.1.2", 2, "Salários a Pagar", "A", "CREDORA", idPlano, true, true);
+            inserirConta("2", 2, "Passivo", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.1", 2, "Passivo Circulante", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.1.1", 2, "Fornecedores", "ANALITICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.1.2", 2, "Salários a Pagar", "ANALITICA", "CREDORA", idPlano, true, true);
 
-            inserirConta("2.2", 2, "Patrimônio Líquido", "S", "CREDORA", idPlano, true, true);
-            inserirConta("2.2.1", 2, "Capital Social", "A", "CREDORA", idPlano, true, true);
+            inserirConta("2.2", 2, "Patrimônio Líquido", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.2.1", 2, "Capital Social", "ANALITICA", "CREDORA", idPlano, true, true);
 
-            inserirConta("3", 3, "Receitas Operacionais", "S", "CREDORA", idPlano, true, true);
-            inserirConta("3.1", 3, "Receita de Vendas de Mercadorias", "A", "CREDORA", idPlano, true, true);
+            inserirConta("3", 3, "Receitas Operacionais", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("3.1", 3, "Receita de Vendas de Mercadorias", "ANALITICA", "CREDORA", idPlano, true, true);
 
-            inserirConta("4", 4, "Custos", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("4.1", 4, "Custo das Mercadorias Vendidas (CMV)", "A", "DEVEDORA", idPlano, true, true);
+            inserirConta("4", 4, "Custos", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("4.1", 4, "Custo das Mercadorias Vendidas (CMV)", "ANALITICA", "DEVEDORA", idPlano, true, true);
 
-            inserirConta("5", 5, "Despesas Operacionais", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("5.1", 5, "Despesas Comerciais", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("5.2", 5, "Despesas Administrativas", "A", "DEVEDORA", idPlano, true, true);
+            inserirConta("5", 5, "Despesas Operacionais", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("5.1", 5, "Despesas Comerciais", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("5.2", 5, "Despesas Administrativas", "ANALITICA", "DEVEDORA", idPlano, true, true);
 
             JOptionPane.showMessageDialog(null, "Plano de contas Comercial gerado com sucesso.");
 
@@ -186,30 +186,30 @@ public class GeradorDosPlanosDeContasPadrao {
             }
 
             // 2) Inserir contas do plano Prestação de Serviço
-            inserirConta("1", 1, "Ativo", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1", 1, "Ativo Circulante", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1.1", 1, "Caixa", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1.2", 1, "Bancos Conta Movimento", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("1.1.3", 1, "Clientes", "A", "DEVEDORA", idPlano, true, true);
+            inserirConta("1", 1, "Ativo", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1", 1, "Ativo Circulante", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1.1", 1, "Caixa", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1.2", 1, "Bancos Conta Movimento", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("1.1.3", 1, "Clientes", "ANALITICA", "DEVEDORA", idPlano, true, true);
 
-            inserirConta("2", 2, "Passivo", "S", "CREDORA", idPlano, true, true);
-            inserirConta("2.1", 2, "Passivo Circulante", "S", "CREDORA", idPlano, true, true);
-            inserirConta("2.1.1", 2, "Fornecedores", "A", "CREDORA", idPlano, true, true);
-            inserirConta("2.1.2", 2, "Empréstimos e Financiamentos", "A", "CREDORA", idPlano, true, true);
+            inserirConta("2", 2, "Passivo", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.1", 2, "Passivo Circulante", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.1.1", 2, "Fornecedores", "ANALITICA", "CREDORA", idPlano, true, true);
+            inserirConta("2.1.2", 2, "Empréstimos e Financiamentos", "ANALITICA", "CREDORA", idPlano, true, true);
 
-            inserirConta("3", 3, "Patrimônio Líquido", "S", "CREDORA", idPlano, true, true);
-            inserirConta("3.1", 3, "Capital Social", "A", "CREDORA", idPlano, true, true);
+            inserirConta("3", 3, "Patrimônio Líquido", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("3.1", 3, "Capital Social", "ANALITICA", "CREDORA", idPlano, true, true);
 
-            inserirConta("4", 4, "Receita Operacional", "S", "CREDORA", idPlano, true, true);
-            inserirConta("4.1", 4, "Receita de Serviços Prestados", "A", "CREDORA", idPlano, true, true);
+            inserirConta("4", 4, "Receita Operacional", "SINTETICA", "CREDORA", idPlano, true, true);
+            inserirConta("4.1", 4, "Receita de Serviços Prestados", "ANALITICA", "CREDORA", idPlano, true, true);
 
-            inserirConta("5", 5, "Custos dos Serviços Prestados", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("5.1", 5, "Despesas com Pessoal", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("5.2", 5, "Despesas Operacionais", "A", "DEVEDORA", idPlano, true, true);
+            inserirConta("5", 5, "Custos dos Serviços Prestados", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("5.1", 5, "Despesas com Pessoal", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("5.2", 5, "Despesas Operacionais", "ANALITICA", "DEVEDORA", idPlano, true, true);
 
-            inserirConta("6", 6, "Despesas Administrativas", "S", "DEVEDORA", idPlano, true, true);
-            inserirConta("6.1", 6, "Aluguel e Manutenção", "A", "DEVEDORA", idPlano, true, true);
-            inserirConta("6.2", 6, "Serviços Terceirizados", "A", "DEVEDORA", idPlano, true, true);
+            inserirConta("6", 6, "Despesas Administrativas", "SINTETICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("6.1", 6, "Aluguel e Manutenção", "ANALITICA", "DEVEDORA", idPlano, true, true);
+            inserirConta("6.2", 6, "Serviços Terceirizados", "ANALITICA", "DEVEDORA", idPlano, true, true);
 
             JOptionPane.showMessageDialog(null, "Plano de contas Prestação de Serviço gerado com sucesso.");
 

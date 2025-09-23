@@ -186,7 +186,7 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
             id VARCHAR(20) NOT NULL,
             codigo_sped TINYINT UNSIGNED NOT NULL,
             descricao VARCHAR(255) NOT NULL,
-            classificacao ENUM('A', 'S') NOT NULL,
+            classificacao ENUM('ANALITICA', 'SINTETICA') NOT NULL,
             natureza ENUM('CREDORA', 'DEVEDORA') NOT NULL,
             id_plano INT NOT NULL,
             obrigatorio_ecd BOOLEAN DEFAULT TRUE,

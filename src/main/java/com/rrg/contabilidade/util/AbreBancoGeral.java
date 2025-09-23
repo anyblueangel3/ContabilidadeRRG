@@ -20,12 +20,12 @@ public class AbreBancoGeral {
         try {
             
             Class.forName("com.mysql.cj.jdbc.Driver");
-            JOptionPane.showMessageDialog(null, "Driver JDBC carregado com sucesso!");
 
         } catch (ClassNotFoundException e) {
 
             JOptionPane.showMessageDialog(null, "Driver JDBC não encontrado no classpath!");
             throw new SQLException("Driver JDBC não encontrado no classpath!", e);
+            
         }
 
         return DriverManager.getConnection(

@@ -42,10 +42,19 @@ public class MenuPrincipal extends JMenuBar {
                     new CadastroDePapeis(programaPrincipal, null);
             programaPrincipal.setPainelCentral(cadastroDePapeis);
         });
+        
+        JMenuItem miPlanoDeContasEContas = 
+                new JMenuItem("Cadastro de Planos de Contas e Contas");
+        miPlanoDeContasEContas.addActionListener(e -> {
+            CadastroDePlanosDeContasEContas cadastroPlanosEContas =
+                    new CadastroDePlanosDeContasEContas(programaPrincipal);
+            programaPrincipal.setPainelCentral(cadastroPlanosEContas);
+        });
 
         menuCadastros.add(miUsuarios);
         menuCadastros.add(miEmpresas);
         menuCadastros.add(miPapeis);
+        menuCadastros.add(miPlanoDeContasEContas);
 
         // ===== Item Sair =====
         JMenuItem miSair = new JMenuItem("Sair");

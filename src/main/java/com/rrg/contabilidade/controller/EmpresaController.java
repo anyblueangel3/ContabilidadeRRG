@@ -59,4 +59,5 @@ public class EmpresaController {
             return List.of(); // retorna lista vazia em caso de erro
         }
     }
+
 }
