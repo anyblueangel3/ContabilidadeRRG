@@ -45,6 +45,7 @@ com\rrg\contabilidade\model\PlanoDeContas.class
 com\rrg\contabilidade\controller\OperacaoDoPapelController.class
 com\rrg\contabilidade\model\Papel.class
 com\rrg\contabilidade\CadastroDeUsuarios$1.class
+com\rrg\contabilidade\CadastroDeContasJDialog.class
 com\rrg\contabilidade\controller\EmpresaController.class
 com\rrg\contabilidade\util\InicializadorDeBancoDeDadosEmpresa.class
 com\rrg\contabilidade\model\Periodo.class
