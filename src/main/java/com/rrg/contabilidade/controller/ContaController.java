@@ -18,6 +18,11 @@ public class ContaController {
         return contaDAO.inserirConta(conta, usarBancoEmpresa);
     }
 
+    // Alterar conta
+    public boolean alterarConta(Conta conta, boolean usarBancoEmpresa) {
+        return contaDAO.alterarConta(conta, usarBancoEmpresa);
+    }
+
     // Excluir conta
     public boolean excluirConta(String id, Integer idPlano, boolean usarBancoEmpresa) {
         return contaDAO.excluirConta(id, idPlano, usarBancoEmpresa);
@@ -27,4 +32,5 @@ public class ContaController {
     public List<Conta> listarContasPorPlano(Integer idPlano, boolean usarBancoEmpresa) {
         return contaDAO.listarContasPorPlano(idPlano, usarBancoEmpresa);
     }
+
 }

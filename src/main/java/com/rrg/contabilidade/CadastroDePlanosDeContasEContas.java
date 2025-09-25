@@ -27,8 +27,8 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
 
     private JButton btInserirPlano;
     private JButton btExcluirPlano;
-    private JButton btInserirConta;
-    private JButton btExcluirConta;
+    private JButton btCadastroContas;
+    private JButton btVoltar;
 
     private boolean usarBancoEmpresa;
 
@@ -51,7 +51,6 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         JPanel painelBancos = new JPanel();
         btBancoGeral = new JButton("Banco Geral");
         btBancoEmpresa = new JButton("Banco Empresa");
-
         painelBancos.add(btBancoGeral);
         painelBancos.add(btBancoEmpresa);
         add(painelBancos, BorderLayout.NORTH);
@@ -60,11 +59,10 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         JPanel painelCentro = new JPanel(new BorderLayout());
 
         cbPlanos = new JComboBox<>();
-        // Renderer para exibir apenas o nome do plano
         cbPlanos.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
             JLabel lbl = new JLabel();
             if (value != null) {
-                lbl.setText(value.getNome()); // sem toString()
+                lbl.setText(value.getNome());
             }
             if (isSelected) {
                 lbl.setOpaque(true);
@@ -78,11 +76,10 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         listModelContas = new DefaultListModel<>();
         listContas = new JList<>(listModelContas);
         listContas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        // Renderer para exibir código + descrição da conta
         listContas.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
             JLabel lbl = new JLabel();
             if (value != null) {
-                lbl.setText(value.getId() + " - " + value.getDescricao()); // sem toString()
+                lbl.setText(value.getId() + " - " + value.getDescricao());
             }
             if (isSelected) {
                 lbl.setOpaque(true);
@@ -97,14 +94,12 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         JPanel painelAcoes = new JPanel();
         btInserirPlano = new JButton("Inserir Plano");
         btExcluirPlano = new JButton("Excluir Plano");
-        btInserirConta = new JButton("Inserir Conta");
-        btExcluirConta = new JButton("Excluir Conta");
-
+        btCadastroContas = new JButton("Cadastro de Contas");
+        btVoltar = new JButton("Voltar");
         painelAcoes.add(btInserirPlano);
         painelAcoes.add(btExcluirPlano);
-        painelAcoes.add(btInserirConta);
-        painelAcoes.add(btExcluirConta);
-
+        painelAcoes.add(btCadastroContas);
+        painelAcoes.add(btVoltar);
         painelCentro.add(painelAcoes, BorderLayout.SOUTH);
 
         add(painelCentro, BorderLayout.CENTER);
@@ -142,17 +137,16 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         btInserirPlano.addActionListener(e -> inserirPlano());
         btExcluirPlano.addActionListener(e -> excluirPlano());
 
-        btInserirConta.addActionListener(e -> inserirConta());
-        btExcluirConta.addActionListener(e -> excluirConta());
+        btCadastroContas.addActionListener(e -> abrirCadastroContas());
+
+        btVoltar.addActionListener(e -> programaPrincipal.abrirTelaPrincipal());
     }
 
     private void atualizarEstadoBotoes() {
         PlanoDeContas planoSelecionado = (PlanoDeContas) cbPlanos.getSelectedItem();
-        Conta contaSelecionada = listContas.getSelectedValue();
-
-        btInserirConta.setEnabled(planoSelecionado != null);
+        listContas.setEnabled(planoSelecionado != null);
+        btCadastroContas.setEnabled(planoSelecionado != null);
         btExcluirPlano.setEnabled(planoSelecionado != null);
-        btExcluirConta.setEnabled(contaSelecionada != null);
     }
 
     private Empresa selecionarEmpresa() {
@@ -166,7 +160,7 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         cbEmpresas.setRenderer((list, value, index, isSelected, cellHasFocus) -> {
             JLabel lbl = new JLabel();
             if (value != null) {
-                lbl.setText(value.getCnpj() + " - " + value.getRazao()); // sem toString()
+                lbl.setText(value.getCnpj() + " - " + value.getRazao());
             }
             if (isSelected) {
                 lbl.setOpaque(true);
@@ -244,44 +238,25 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         }
     }
 
-    private void inserirConta() {
-        PlanoDeContas plano = (PlanoDeContas) cbPlanos.getSelectedItem();
-        if (plano == null) return;
+    private void abrirCadastroContas() {
+        PlanoDeContas planoSelecionado = (PlanoDeContas) cbPlanos.getSelectedItem();
+        Conta contaSelecionada = listContas.getSelectedValue();
 
-        String id = JOptionPane.showInputDialog(this, "Informe o código da nova conta:");
-        if (id == null || id.trim().isEmpty()) return;
-
-        String descricao = JOptionPane.showInputDialog(this, "Informe a descrição da conta:");
-        if (descricao == null || descricao.trim().isEmpty()) return;
-
-        Conta conta = new Conta();
-        conta.setId(id.trim());
-        conta.setDescricao(descricao.trim());
-        conta.setIdPlano(plano.getId());
-
-        if (contaController.inserirConta(conta, usarBancoEmpresa)) {
-            carregarContasDoPlano();
-            JOptionPane.showMessageDialog(this, "Conta inserida com sucesso!");
-        } else {
-            JOptionPane.showMessageDialog(this, "Erro ao inserir conta.", "Erro", JOptionPane.ERROR_MESSAGE);
+        if (planoSelecionado == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um plano primeiro.");
+            return;
         }
-    }
 
-    private void excluirConta() {
-        Conta conta = listContas.getSelectedValue();
-        if (conta == null) return;
+        CadastroDeContasJDialog dialog = new CadastroDeContasJDialog(
+                SwingUtilities.getWindowAncestor(this),
+                planoSelecionado,
+                contaSelecionada,
+                contaController,
+                usarBancoEmpresa
+        );
+        dialog.setVisible(true);
 
-        int opcao = JOptionPane.showConfirmDialog(this,
-                "Deseja excluir a conta " + conta.getDescricao() + "?",
-                "Confirmação", JOptionPane.YES_NO_OPTION);
-
-        if (opcao == JOptionPane.YES_OPTION) {
-            if (contaController.excluirConta(conta.getId(), conta.getIdPlano(), usarBancoEmpresa)) {
-                carregarContasDoPlano();
-                JOptionPane.showMessageDialog(this, "Conta excluída com sucesso!");
-            } else {
-                JOptionPane.showMessageDialog(this, "Erro ao excluir conta.", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        // Após fechar o diálogo, recarrega as contas
+        carregarContasDoPlano();
     }
 }
