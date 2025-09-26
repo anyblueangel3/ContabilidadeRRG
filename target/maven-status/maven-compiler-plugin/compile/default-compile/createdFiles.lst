@@ -4,6 +4,7 @@ com\rrg\contabilidade\util\SessaoDeUsuario.class
 com\rrg\contabilidade\model\dao\PermissaoDAO.class
 com\rrg\contabilidade\controller\GestorDasOperacoesDosPapeisController.class
 com\rrg\contabilidade\model\Empresa.class
+com\rrg\contabilidade\util\PermissaoUtil.class
 com\rrg\contabilidade\controller\ContaController.class
 com\rrg\contabilidade\model\dao\PermissaoDeUsuarioDAO.class
 com\rrg\contabilidade\CadastroDeEmpresa.class
@@ -21,6 +22,7 @@ com\rrg\contabilidade\model\dao\OperacaoDoPapelDAO.class
 com\rrg\contabilidade\util\AbreBancoEmpresa.class
 com\rrg\contabilidade\CadastroDeUsuarios.class
 com\rrg\contabilidade\util\InicializadorDeBancoDeDadosGeral.class
+com\rrg\contabilidade\util\ValidadorDeContas.class
 com\rrg\contabilidade\util\PasswordUtils.class
 com\rrg\contabilidade\controller\GestorDasOperacoesDosUsuariosController.class
 com\rrg\contabilidade\model\dao\PermissaoDoPapelDAO.class
@@ -57,3 +59,4 @@ com\rrg\contabilidade\Contabilidade.class
 com\rrg\contabilidade\model\OperacaoDoPapel.class
 com\rrg\contabilidade\util\GeradorDasOperacoesPapeis.class
 com\rrg\contabilidade\controller\PapelController.class
+com\rrg\contabilidade\util\OperacoesDoSistema.class

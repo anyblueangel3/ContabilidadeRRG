@@ -28,9 +28,11 @@ C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\GeradorDosPlanosDeContasPadrao.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\Operacao.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\Empresa.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\OperacoesDoSistema.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\EmpresaDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\Classificacao.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\CadastroDePapeis.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\PermissaoUtil.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\AbreBancoEmpresa.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PapelDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\MenuPrincipal.java
@@ -54,4 +56,5 @@ C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\ContaController.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\ProgramaPrincipal.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PlanoDeContasDAO.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\ValidadorDeContas.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\OperacaoDeUsuario.java

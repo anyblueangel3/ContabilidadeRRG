@@ -61,13 +61,20 @@ class GeradorDasOperacoesPapeis {
 
     private void populaAdmin(Papel papel) throws SQLException {
 
-        String[] sql = {"INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 1)",
-            "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 2)",
-            "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 3)",
-            "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 4)",
-            "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 5)",
-            "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 6)",
-        };
+        String[] sql
+                = {"INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 1)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 2)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 3)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 4)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 5)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 6)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 7)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 8)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 9)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 10)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 11)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 12)"
+                };
 
         try {
             for (String auxSql : sql) {
@@ -85,10 +92,9 @@ class GeradorDasOperacoesPapeis {
 
     private void populaAuditor(Papel papel) throws SQLException {
 
-        String[] sql = {"INSERT INTO operacoes_papeis (id_papel, id_operacao) "
-                + "VALUES (" + papel.getId() + ", 5)",
-            "INSERT INTO operacoes_papeis (id_papel, id_operacao)"
-                + " VALUES (" + papel.getId() + ", 3)"};
+        String[] sql
+                = {"INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 7)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 8)"};
 
         try {
             for (String auxSql : sql) {
@@ -106,10 +112,14 @@ class GeradorDasOperacoesPapeis {
 
     private void populaContador(Papel papel) throws SQLException {
 
-        String[] sql = {"INSERT INTO operacoes_papeis (id_papel, id_operacao)"
-                + " VALUES (" + papel.getId() + ", 5)",
-            "INSERT INTO operacoes_papeis (id_papel, id_operacao)"
-                + " VALUES (" + papel.getId() + ", 3)"};
+        String[] sql
+                = {"INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 5)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 6)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 7)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 8)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 9)",
+                    "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 10)"
+                };
 
         try {
             for (String auxSql : sql) {
@@ -127,10 +137,9 @@ class GeradorDasOperacoesPapeis {
 
     private void populaUsuario(Papel papel) throws SQLException {
 
-        String[] sql = {"INSERT INTO operacoes_papeis (id_papel, id_operacao)"
-                + " VALUES (" + papel.getId() + ", 1)",
-            "INSERT INTO operacoes_papeis (id_papel, id_operacao)"
-                + " VALUES (" + papel.getId() + ", 5)"};
+        String[] sql
+                = {"INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 5)",
+                   "INSERT INTO operacoes_papeis (id_papel, id_operacao) VALUES (" + papel.getId() + ", 7)"};
 
         try {
             for (String auxSql : sql) {

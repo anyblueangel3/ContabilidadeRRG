@@ -98,7 +98,7 @@ public class CadastroDeUsuarios extends JPanel {
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         btSalvar = new JButton("Salvar");
         btAlterarOperacoesUsuario = new JButton("Alterar Operações do Usuário");
-        btSair = new JButton("Sair");
+        btSair = new JButton("Sair do Cadastro de Usuários");
         painelBotoes.add(btSalvar);
         painelBotoes.add(btAlterarOperacoesUsuario);
         painelBotoes.add(btSair);

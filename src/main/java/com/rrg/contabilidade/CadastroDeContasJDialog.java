@@ -5,6 +5,7 @@ import com.rrg.contabilidade.model.Classificacao;
 import com.rrg.contabilidade.model.Conta;
 import com.rrg.contabilidade.model.Natureza;
 import com.rrg.contabilidade.model.PlanoDeContas;
+import com.rrg.contabilidade.util.ValidadorDeContas;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,10 +30,10 @@ public class CadastroDeContasJDialog extends JDialog {
     private JButton btCancelar;
 
     public CadastroDeContasJDialog(Window owner,
-                                   PlanoDeContas plano,
-                                   Conta conta,
-                                   ContaController contaController,
-                                   boolean usarBancoEmpresa) {
+            PlanoDeContas plano,
+            Conta conta,
+            ContaController contaController,
+            boolean usarBancoEmpresa) {
         super(owner, "Cadastro de Conta", ModalityType.APPLICATION_MODAL);
         this.plano = plano;
         this.conta = conta;
@@ -213,6 +214,24 @@ public class CadastroDeContasJDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Código SPED deve ser numérico.", "Atenção", JOptionPane.WARNING_MESSAGE);
             return false;
         }
+
+        if (tfId.isEnabled()) {
+
+            // Validação da estrutura hierárquica da conta
+            ValidadorDeContas validador = new ValidadorDeContas(contaController, usarBancoEmpresa);
+            String idConta = tfId.getText().trim();
+
+            if (!validador.podeCadastrarConta(idConta, plano.getId())) {
+                JOptionPane.showMessageDialog(this,
+                        "Não é possível cadastrar a conta " + idConta + ".\n"
+                        + "Certifique-se de que todas as contas de nível superior já estão cadastradas.",
+                        "Conta inválida",
+                        JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+
+        }
+
         return true;
     }
 }

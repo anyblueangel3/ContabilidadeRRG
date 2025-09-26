@@ -28,7 +28,7 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
     private JButton btInserirPlano;
     private JButton btExcluirPlano;
     private JButton btCadastroContas;
-    private JButton btVoltar;
+    private JButton btSair;
 
     private boolean usarBancoEmpresa;
 
@@ -95,11 +95,11 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         btInserirPlano = new JButton("Inserir Plano");
         btExcluirPlano = new JButton("Excluir Plano");
         btCadastroContas = new JButton("Cadastro de Contas");
-        btVoltar = new JButton("Voltar");
+        btSair = new JButton("Sair do Cadastro de Planos e Contas");
         painelAcoes.add(btInserirPlano);
         painelAcoes.add(btExcluirPlano);
         painelAcoes.add(btCadastroContas);
-        painelAcoes.add(btVoltar);
+        painelAcoes.add(btSair);
         painelCentro.add(painelAcoes, BorderLayout.SOUTH);
 
         add(painelCentro, BorderLayout.CENTER);
@@ -123,7 +123,9 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
                 usarBancoEmpresa = true;
                 carregarPlanos();
                 atualizarEstadoBotoes();
-                JOptionPane.showMessageDialog(this, "Banco Empresa selecionado: " + empresaSelecionada.getRazao());
+                JOptionPane.showMessageDialog(this,
+                        "Banco Empresa selecionado: " +
+                        empresaSelecionada.getRazao());
             }
         });
 
@@ -139,7 +141,7 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
 
         btCadastroContas.addActionListener(e -> abrirCadastroContas());
 
-        btVoltar.addActionListener(e -> programaPrincipal.abrirTelaPrincipal());
+        btSair.addActionListener(e -> programaPrincipal.abrirTelaPrincipal());
     }
 
     private void atualizarEstadoBotoes() {
@@ -152,7 +154,8 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
     private Empresa selecionarEmpresa() {
         List<Empresa> empresas = empresaController.listarTodasEmpresas();
         if (empresas == null || empresas.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nenhuma empresa cadastrada no banco geral.");
+            JOptionPane.showMessageDialog(this,
+                    "Nenhuma empresa cadastrada no banco geral.");
             return null;
         }
 
@@ -194,7 +197,8 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         PlanoDeContas plano = (PlanoDeContas) cbPlanos.getSelectedItem();
         if (plano == null) return;
 
-        List<Conta> contas = contaController.listarContasPorPlano(plano.getId(), usarBancoEmpresa);
+        List<Conta> contas = contaController.listarContasPorPlano(plano.getId(),
+                usarBancoEmpresa);
         if (contas != null) {
             contas.forEach(listModelContas::addElement);
         }
@@ -202,10 +206,12 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
     }
 
     private void inserirPlano() {
-        String nome = JOptionPane.showInputDialog(this, "Informe o nome do novo plano:");
+        String nome = JOptionPane.showInputDialog(this,
+                "Informe o nome do novo plano:");
         if (nome == null || nome.trim().isEmpty()) return;
 
-        String descricao = JOptionPane.showInputDialog(this, "Informe a descrição do plano:");
+        String descricao = JOptionPane.showInputDialog(this,
+                "Informe a descrição do plano:");
         if (descricao == null) descricao = "";
 
         PlanoDeContas plano = new PlanoDeContas();
@@ -214,9 +220,12 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
 
         if (planoController.salvarPlano(plano, usarBancoEmpresa)) {
             carregarPlanos();
-            JOptionPane.showMessageDialog(this, "Plano inserido com sucesso!");
+            JOptionPane.showMessageDialog(this, 
+                    "Plano inserido com sucesso!");
         } else {
-            JOptionPane.showMessageDialog(this, "Erro ao inserir plano.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao inserir plano.",
+                    "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -231,9 +240,13 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         if (opcao == JOptionPane.YES_OPTION) {
             if (planoController.excluirPlano(plano.getId(), usarBancoEmpresa)) {
                 carregarPlanos();
-                JOptionPane.showMessageDialog(this, "Plano excluído com sucesso!");
+                JOptionPane.showMessageDialog(this,
+                        "Plano excluído com sucesso!");
             } else {
-                JOptionPane.showMessageDialog(this, "Erro ao excluir plano.", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Erro ao excluir plano.",
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -243,7 +256,8 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
         Conta contaSelecionada = listContas.getSelectedValue();
 
         if (planoSelecionado == null) {
-            JOptionPane.showMessageDialog(this, "Selecione um plano primeiro.");
+            JOptionPane.showMessageDialog(this,
+                    "Selecione um plano primeiro.");
             return;
         }
 
