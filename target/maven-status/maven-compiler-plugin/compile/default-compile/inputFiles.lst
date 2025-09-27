@@ -13,6 +13,7 @@ C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\GeradorDasOperacoesPapeis.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\OperacaoController.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\Lancamentos.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\PeriodoController.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PermissaoDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PermissaoDeUsuarioDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\CadastroDePlanosDeContasEContas.java
@@ -20,6 +21,7 @@ C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\AbreBancoGeral.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\InicializadorDeBancoDeDadosGeral.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\OperacaoDAO.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PeriodoDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\Usuario.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\GestorDasOperacoesDosPapeisController.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\CadastroDeEmpresa.java
@@ -36,6 +38,7 @@ C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\AbreBancoEmpresa.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PapelDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\MenuPrincipal.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\PeriodoJDialog.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\EmpresaController.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\SessaoDeUsuario.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\OperacaoDoPapel.java

@@ -54,6 +54,4 @@ public class Periodo {
         this.idPlano = idPlano;
     }
     
-    
-    
 }
