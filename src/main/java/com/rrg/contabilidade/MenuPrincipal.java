@@ -4,6 +4,7 @@ import com.rrg.contabilidade.model.Usuario;
 import com.rrg.contabilidade.util.OperacoesDoSistema;
 import com.rrg.contabilidade.util.PermissaoUtil;
 import com.rrg.contabilidade.util.SessaoDeUsuario;
+import com.rrg.contabilidade.util.SessaoListener;
 
 import javax.swing.*;
 
@@ -14,10 +15,26 @@ import javax.swing.*;
  * JMenuBar do sistema, chama diretamente os painéis de cadastro existentes.
  * Barra de menu principal com verificação de permissões.
  */
-public class MenuPrincipal extends JMenuBar {
+public class MenuPrincipal extends JMenuBar implements SessaoListener {
 
     private ProgramaPrincipal programaPrincipal;
     private Usuario usuario = SessaoDeUsuario.getUsuarioLogado();
+
+    // Agora todos os JMenuItem são atributos
+    private JMenuItem miUsuarios;
+    private JMenuItem miEmpresas;
+    private JMenuItem miPapeis;
+    private JMenuItem miPlanoDeContasEContas;
+    private JMenuItem miLancamentos;
+    private JMenuItem miAre;
+    private JMenuItem miBalancete;
+    private JMenuItem miBalanco;
+    private JMenuItem miDre;
+    private JMenuItem miPlanoContas;
+    private JMenuItem miBackup;
+    private JMenuItem miIndices;
+    
+    private JMenuItem miLoginTriplo;
 
     public MenuPrincipal(ProgramaPrincipal programaPrincipal) {
         this.programaPrincipal = programaPrincipal;
@@ -25,25 +42,25 @@ public class MenuPrincipal extends JMenuBar {
         // ===== Menu Cadastros =====
         JMenu menuCadastros = new JMenu("Cadastros");
 
-        JMenuItem miUsuarios = new JMenuItem("Cadastro de Usuários e suas Operações");
+        miUsuarios = new JMenuItem("Cadastro de Usuários e suas Operações");
         miUsuarios.addActionListener(e -> {
             CadastroDeUsuarios cadastroUsuarios = new CadastroDeUsuarios(programaPrincipal, null, false);
             programaPrincipal.setPainelCentral(cadastroUsuarios);
         });
 
-        JMenuItem miEmpresas = new JMenuItem("Cadastro de Empresas");
+        miEmpresas = new JMenuItem("Cadastro de Empresas");
         miEmpresas.addActionListener(e -> {
             CadastroDeEmpresa cadastroEmpresa = new CadastroDeEmpresa(programaPrincipal, null);
             programaPrincipal.setPainelCentral(cadastroEmpresa);
         });
 
-        JMenuItem miPapeis = new JMenuItem("Cadastro de Papéis e suas Operações");
+        miPapeis = new JMenuItem("Cadastro de Papéis e suas Operações");
         miPapeis.addActionListener(e -> {
             CadastroDePapeis cadastroDePapeis = new CadastroDePapeis(programaPrincipal, null);
             programaPrincipal.setPainelCentral(cadastroDePapeis);
         });
 
-        JMenuItem miPlanoDeContasEContas = new JMenuItem("Cadastro de Planos de Contas e Contas");
+        miPlanoDeContasEContas = new JMenuItem("Cadastro de Planos de Contas e Contas");
         miPlanoDeContasEContas.addActionListener(e -> {
             CadastroDePlanosDeContasEContas cadastroPlanosEContas =
                     new CadastroDePlanosDeContasEContas(programaPrincipal);
@@ -64,16 +81,21 @@ public class MenuPrincipal extends JMenuBar {
 
         // ===== Menu Operações =====
         JMenu menuOperacoes = new JMenu("Operações");
+        
+        miLoginTriplo = new JMenuItem("Login Usuário + Empresa + Periodo");
+        miLoginTriplo.addActionListener(e -> new LoginUsuarioEmpresaPeriodo(programaPrincipal));
 
-        JMenuItem miLancamentos = new JMenuItem("Lançamentos");
+        miLancamentos = new JMenuItem("Lançamentos");
         miLancamentos.addActionListener(e -> programaPrincipal.setPainelCentral(
                 new Lancamentos(programaPrincipal, null, null, null)));
 
-        JMenuItem miAre = new JMenuItem("ARE");
+        miAre = new JMenuItem("ARE");
         miAre.addActionListener(e -> {
             // TODO: implementar classe ARE
             // programaPrincipal.setPainelCentral(new ArePanel());
         });
+        
+        menuOperacoes.add(miLoginTriplo);
 
         menuOperacoes.add(miLancamentos);
         menuOperacoes.add(miAre);
@@ -81,22 +103,22 @@ public class MenuPrincipal extends JMenuBar {
         // ===== Menu Relatórios =====
         JMenu menuRelatorios = new JMenu("Relatórios");
 
-        JMenuItem miBalancete = new JMenuItem("Balancete");
+        miBalancete = new JMenuItem("Balancete");
         miBalancete.addActionListener(e -> {
             // TODO: implementar relatório
         });
 
-        JMenuItem miBalanco = new JMenuItem("Balanço");
+        miBalanco = new JMenuItem("Balanço");
         miBalanco.addActionListener(e -> {
             // TODO: implementar relatório
         });
 
-        JMenuItem miDre = new JMenuItem("DRE");
+        miDre = new JMenuItem("DRE");
         miDre.addActionListener(e -> {
             // TODO: implementar relatório
         });
 
-        JMenuItem miPlanoContas = new JMenuItem("Plano de Contas");
+        miPlanoContas = new JMenuItem("Plano de Contas");
         miPlanoContas.addActionListener(e -> {
             // TODO: implementar relatório
         });
@@ -109,12 +131,12 @@ public class MenuPrincipal extends JMenuBar {
         // ===== Menu Manutenção =====
         JMenu menuManutencao = new JMenu("Manutenção");
 
-        JMenuItem miBackup = new JMenuItem("Backup");
+        miBackup = new JMenuItem("Backup");
         miBackup.addActionListener(e -> {
             // TODO: implementar Backup
         });
 
-        JMenuItem miIndices = new JMenuItem("Índices");
+        miIndices = new JMenuItem("Índices");
         miIndices.addActionListener(e -> {
             // TODO: implementar ou excluir
         });
@@ -122,7 +144,24 @@ public class MenuPrincipal extends JMenuBar {
         menuManutencao.add(miBackup);
         menuManutencao.add(miIndices);
 
-        // ===== Verifica permissões e desativa itens não permitidos =====
+        // ===== Registra como listener de sessão =====
+        SessaoDeUsuario.addListener(this);
+
+        // ===== Aplica permissões iniciais =====
+        atualizarPermissoesMenu();
+
+        // ===== Adiciona menus à barra =====
+        add(menuCadastros);
+        add(menuOperacoes);
+        add(menuRelatorios);
+        add(menuManutencao);
+    }
+
+    /**
+     * Atualiza o estado de habilitação dos menus com base nas permissões
+     * do usuário logado.
+     */
+    public void atualizarPermissoesMenu() {
         miUsuarios.setEnabled(PermissaoUtil.temPermissao(OperacoesDoSistema.CADASTRO_USUARIOS));
         miEmpresas.setEnabled(PermissaoUtil.temPermissao(OperacoesDoSistema.CADASTRO_EMPRESAS));
         miPapeis.setEnabled(PermissaoUtil.temPermissao(OperacoesDoSistema.CADASTRO_PAPEIS));
@@ -135,11 +174,22 @@ public class MenuPrincipal extends JMenuBar {
         miPlanoContas.setEnabled(PermissaoUtil.temPermissao(OperacoesDoSistema.PLANO_DE_CONTAS));
         miBackup.setEnabled(PermissaoUtil.temPermissao(OperacoesDoSistema.BACKUP));
         miIndices.setEnabled(PermissaoUtil.temPermissao(OperacoesDoSistema.INDICES));
+    }
 
-        // ===== Adiciona menus à barra =====
-        add(menuCadastros);
-        add(menuOperacoes);
-        add(menuRelatorios);
-        add(menuManutencao);
+    @Override
+    public void aoLogar() {
+        usuario = SessaoDeUsuario.getUsuarioLogado();
+        atualizarPermissoesMenu();
+    }
+
+    @Override
+    public void aoLogout() {
+        usuario = null;
+        //SessaoDeUsuario.logout();
+        SessaoDeUsuario.logoutEmpresa();
+        SessaoDeUsuario.logoutPeriodo();
+        atualizarPermissoesMenu();
+        
+        JOptionPane.showMessageDialog(this, "Você foi desconectado.");
     }
 }
