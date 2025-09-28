@@ -223,8 +223,6 @@ public class CriadorDasTabelasDoBancoDeDadosGeral {
                         id_conta VARCHAR(20) NOT NULL,
                         tipo ENUM('D', 'C') NOT NULL,
                         valor DECIMAL(15, 2) NOT NULL,
-                        historico_item TEXT,
-                        documento VARCHAR(50),
                         FOREIGN KEY (id_lancamento) REFERENCES lancamentos(id),
                         FOREIGN KEY (id_plano, id_conta) REFERENCES contas(id_plano, id)
                      );
