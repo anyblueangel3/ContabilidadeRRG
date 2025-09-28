@@ -28,11 +28,27 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
     private JButton btLogarPeriodo;
     private JButton btVoltarMenu;
 
-    public LoginUsuarioEmpresaPeriodo(JFrame parent) {
+    private ProgramaPrincipal pP;
+
+    public LoginUsuarioEmpresaPeriodo(ProgramaPrincipal parent) {
         super(parent, "Login do Usuário / Empresa / Período", true);
-        setMinimumSize(new Dimension(500, 250)); // largura maior
+        pP = parent;
+        setMinimumSize(new Dimension(500, 250));
         inicializarComponentes();
         definirEventos();
+
+        // Se já houver usuário logado, carrega lista de empresas automaticamente
+        if (SessaoDeUsuario.isLogado()) {
+            carregarEmpresas();
+            btLogarEmpresa.setEnabled(true);
+
+            // Se também já houver empresa logada
+            if (SessaoDeUsuario.isEmpresaLogada()) {
+                carregarPeriodos();
+                btLogarPeriodo.setEnabled(true);
+            }
+        }
+
         pack();
         setLocationRelativeTo(parent);
     }
@@ -181,10 +197,10 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
         cbEmpresas.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
+                    boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Empresa empresa) {
-                    setText(empresa.getCnpj()+"-"+empresa.getRazao());
+                    setText(empresa.getCnpj() + "-" + empresa.getRazao());
                 }
                 return this;
             }
@@ -215,7 +231,7 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
         cbPeriodos.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                                                          boolean isSelected, boolean cellHasFocus) {
+                    boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Periodo periodo) {
                     setText(periodo.getInicio() + " " + periodo.getFim());
@@ -224,4 +240,21 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
             }
         });
     }
+
+//    @Override
+//    public void dispose() {
+//        super.dispose();
+//        if (getParent() instanceof ProgramaPrincipal pp) {
+//            if (SessaoDeUsuario.isLogado()) {
+//                pp.abrirTelaPrincipal();
+//            }
+//        }
+//    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        pP.abrirTelaPrincipal();
+    }
+
 }
