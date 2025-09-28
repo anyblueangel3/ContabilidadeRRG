@@ -22,11 +22,15 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
     private JPasswordField pfSenha;
     private JComboBox<Empresa> cbEmpresas;
     private JComboBox<Periodo> cbPeriodos;
-    private JButton btConfirmar;
-    private JButton btCancelar;
+
+    private JButton btLogarUsuario;
+    private JButton btLogarEmpresa;
+    private JButton btLogarPeriodo;
+    private JButton btVoltarMenu;
 
     public LoginUsuarioEmpresaPeriodo(JFrame parent) {
         super(parent, "Login do Usuário / Empresa / Período", true);
+        setMinimumSize(new Dimension(500, 250)); // largura maior
         inicializarComponentes();
         definirEventos();
         pack();
@@ -55,6 +59,11 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
         c.gridx = 1;
         add(pfSenha, c);
 
+        // Botão Logar Usuário
+        btLogarUsuario = new JButton("Logar Usuário");
+        c.gridx = 2;
+        add(btLogarUsuario, c);
+
         // Empresas
         c.gridx = 0;
         c.gridy = 2;
@@ -63,6 +72,12 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
         cbEmpresas.setEnabled(false);
         c.gridx = 1;
         add(cbEmpresas, c);
+
+        // Botão Logar Empresa
+        btLogarEmpresa = new JButton("Logar Empresa");
+        btLogarEmpresa.setEnabled(false);
+        c.gridx = 2;
+        add(btLogarEmpresa, c);
 
         // Períodos
         c.gridx = 0;
@@ -73,26 +88,31 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
         c.gridx = 1;
         add(cbPeriodos, c);
 
-        // Botões
-        JPanel painelBotoes = new JPanel();
-        btConfirmar = new JButton("Confirmar");
-        btCancelar = new JButton("Cancelar");
-        painelBotoes.add(btConfirmar);
-        painelBotoes.add(btCancelar);
+        // Botão Logar Período
+        btLogarPeriodo = new JButton("Logar Período");
+        btLogarPeriodo.setEnabled(false);
+        c.gridx = 2;
+        add(btLogarPeriodo, c);
 
+        // Botão Voltar ao Menu Principal
+        btVoltarMenu = new JButton("Voltar ao Menu Principal");
+        JPanel painelVoltar = new JPanel();
+        painelVoltar.add(btVoltarMenu);
         c.gridx = 0;
         c.gridy = 4;
-        c.gridwidth = 2;
-        add(painelBotoes, c);
+        c.gridwidth = 3;
+        c.anchor = GridBagConstraints.CENTER;
+        add(painelVoltar, c);
     }
 
     private void definirEventos() {
-        btConfirmar.addActionListener(e -> {
+        // Botão Logar Usuário
+        btLogarUsuario.addActionListener(e -> {
             String login = tfLogin.getText().trim();
             String senha = new String(pfSenha.getPassword());
 
             if (login.isEmpty() || senha.isEmpty()) {
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,
                         "Informe login e senha.", "Atenção",
                         JOptionPane.WARNING_MESSAGE);
                 return;
@@ -101,8 +121,7 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
             UsuarioController usuarioController = new UsuarioController();
             Usuario usuario = usuarioController.buscarUsuarioPorLogin(login);
 
-            if (usuario == null || !PasswordUtils.verificar(senha,
-                    usuario.getSenha())) {
+            if (usuario == null || !PasswordUtils.verificar(senha, usuario.getSenha())) {
                 JOptionPane.showMessageDialog(this,
                         "Usuário ou senha inválidos.", "Erro",
                         JOptionPane.ERROR_MESSAGE);
@@ -111,29 +130,33 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
                 cbEmpresas.removeAllItems();
                 cbPeriodos.setEnabled(false);
                 cbPeriodos.removeAllItems();
+                btLogarEmpresa.setEnabled(false);
+                btLogarPeriodo.setEnabled(false);
                 return;
             }
 
-            // Usuário válido
             SessaoDeUsuario.logar(usuario);
-            carregarEmpresas(); // habilita empresas e limpa períodos
+            carregarEmpresas();
+            btLogarEmpresa.setEnabled(true);
         });
 
-        btCancelar.addActionListener(e -> dispose());
-
-        cbEmpresas.addActionListener(e -> {
+        // Botão Logar Empresa
+        btLogarEmpresa.addActionListener(e -> {
             Empresa empresaSelecionada = (Empresa) cbEmpresas.getSelectedItem();
             if (empresaSelecionada != null) {
                 SessaoDeUsuario.logarEmpresa(empresaSelecionada);
-                carregarPeriodos(); // carrega períodos da empresa logada
+                carregarPeriodos();
+                btLogarPeriodo.setEnabled(true);
             } else {
                 SessaoDeUsuario.logoutEmpresa();
                 cbPeriodos.setEnabled(false);
                 cbPeriodos.removeAllItems();
+                btLogarPeriodo.setEnabled(false);
             }
         });
 
-        cbPeriodos.addActionListener(e -> {
+        // Botão Logar Período
+        btLogarPeriodo.addActionListener(e -> {
             Periodo periodoSelecionado = (Periodo) cbPeriodos.getSelectedItem();
             if (periodoSelecionado != null) {
                 SessaoDeUsuario.logarPeriodo(periodoSelecionado);
@@ -141,46 +164,64 @@ public class LoginUsuarioEmpresaPeriodo extends JDialog {
                 SessaoDeUsuario.logoutPeriodo();
             }
         });
+
+        // Botão Voltar ao Menu Principal
+        btVoltarMenu.addActionListener(e -> dispose());
     }
 
     private void carregarEmpresas() {
         EmpresaController empresaController = new EmpresaController();
-        List<Empresa> empresas = empresaController.listarTodasEmpresas(); // sem filtro por usuário
+        List<Empresa> empresas = empresaController.listarTodasEmpresas();
         cbEmpresas.removeAllItems();
         for (Empresa e : empresas) {
             cbEmpresas.addItem(e);
         }
         cbEmpresas.setEnabled(!empresas.isEmpty());
 
+        cbEmpresas.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Empresa empresa) {
+                    setText(empresa.getCnpj()+"-"+empresa.getRazao());
+                }
+                return this;
+            }
+        });
+
         // Limpa períodos
-        cbPeriodos.setEnabled(false);
         cbPeriodos.removeAllItems();
-        SessaoDeUsuario.logoutEmpresa();
-        SessaoDeUsuario.logoutPeriodo();
+        cbPeriodos.setEnabled(false);
+        btLogarPeriodo.setEnabled(false);
     }
 
     private void carregarPeriodos() {
-        cbPeriodos.removeAllItems();
-        cbPeriodos.setEnabled(false);
-
-        Empresa empresaLogada = SessaoDeUsuario.getEmpresaLogada();
-        if (empresaLogada == null) return;
-
+        List<Periodo> periodos = List.of(); // default vazio
         try (Connection conn = AbreBancoEmpresa.obterConexao()) {
             PeriodoController periodoController = new PeriodoController(conn);
-            List<Periodo> periodos = periodoController.listarAbertos();
-            for (Periodo p : periodos) {
-                cbPeriodos.addItem(p);
-            }
-            cbPeriodos.setEnabled(!periodos.isEmpty());
-            if (periodos.isEmpty()) {
-                SessaoDeUsuario.logoutPeriodo();
-            }
+            periodos = periodoController.listarAbertos();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
-                    "Erro ao acessar o banco de dados empresa:\n" + e,
-                    "Erro", JOptionPane.ERROR_MESSAGE);
+                    "Erro ao acessar o banco de dados empresa:\n" + e);
         }
+
+        cbPeriodos.removeAllItems();
+        for (Periodo p : periodos) {
+            cbPeriodos.addItem(p);
+        }
+        cbPeriodos.setEnabled(!periodos.isEmpty());
+
+        cbPeriodos.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Periodo periodo) {
+                    setText(periodo.getInicio() + " " + periodo.getFim());
+                }
+                return this;
+            }
+        });
     }
 }
-

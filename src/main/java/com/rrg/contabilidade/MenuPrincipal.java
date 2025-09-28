@@ -83,11 +83,15 @@ public class MenuPrincipal extends JMenuBar implements SessaoListener {
         JMenu menuOperacoes = new JMenu("Operações");
         
         miLoginTriplo = new JMenuItem("Login Usuário + Empresa + Periodo");
-        miLoginTriplo.addActionListener(e -> new LoginUsuarioEmpresaPeriodo(programaPrincipal));
+        miLoginTriplo.addActionListener(e -> {
+            LoginUsuarioEmpresaPeriodo dialog = 
+                    new LoginUsuarioEmpresaPeriodo(programaPrincipal);
+            dialog.setVisible(true);
+        });
 
         miLancamentos = new JMenuItem("Lançamentos");
         miLancamentos.addActionListener(e -> programaPrincipal.setPainelCentral(
-                new Lancamentos(programaPrincipal, null, null, null)));
+                new Lancamentos(programaPrincipal)));
 
         miAre = new JMenuItem("ARE");
         miAre.addActionListener(e -> {
@@ -190,6 +194,8 @@ public class MenuPrincipal extends JMenuBar implements SessaoListener {
         SessaoDeUsuario.logoutPeriodo();
         atualizarPermissoesMenu();
         
-        JOptionPane.showMessageDialog(this, "Você foi desconectado.");
+        JOptionPane.showMessageDialog(this,
+                "Você foi desconectado.", "Logout",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 }

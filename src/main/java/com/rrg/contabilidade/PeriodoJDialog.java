@@ -13,13 +13,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -27,26 +23,41 @@ import java.util.List;
  */
 public class PeriodoJDialog extends JDialog {
 
-    private final PeriodoController periodoController;
+    private PeriodoController periodoController;
     private JTable tabelaPeriodos;
     private DefaultTableModel tabelaModel;
 
     private JSpinner spinnerInicio, spinnerFim;
     private JComboBox<String> cbPlanos;
-    private JButton btnAdicionar, btnConfirmar;
+    private JButton btnAdicionar, btnConfirmar, btnVoltar;
 
     private List<Periodo> periodosAbertos;
     private List<Integer> idsPlanos;
     private List<Boolean> planosDoGeral;
 
     private SimpleDateFormat formatoData = new SimpleDateFormat("yyyy-MM-dd");
+    private Connection connEmpresa; // conexão persistente
 
-    public PeriodoJDialog(Frame parent, PeriodoController controller) {
+    public PeriodoJDialog(Frame parent) {
         super(parent, "Gerenciamento de Períodos", true);
-        this.periodoController = controller;
-        this.periodosAbertos = new ArrayList<>();
-        this.idsPlanos = new ArrayList<>();
-        this.planosDoGeral = new ArrayList<>();
+
+        periodosAbertos = new ArrayList<>();
+        idsPlanos = new ArrayList<>();
+        planosDoGeral = new ArrayList<>();
+
+        // abrir conexão persistente
+        try {
+            connEmpresa = AbreBancoEmpresa.obterConexao();
+            this.periodoController = new PeriodoController(connEmpresa);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Erro ao abrir conexão com o banco da empresa: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            dispose();
+            return;
+        }
 
         initComponents();
         carregarPeriodosAbertos();
@@ -70,28 +81,37 @@ public class PeriodoJDialog extends JDialog {
         tabelaPeriodos = new JTable(tabelaModel);
         tabelaPeriodos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // Renderer para colorir linhas conforme origem e status
+        // Renderer seguro
         tabelaPeriodos.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
                                                            boolean isSelected, boolean hasFocus,
                                                            int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                Periodo p = periodosAbertos.get(row);
-                if (p.getStatus() == StatusPeriodo.FECHADO) {
-                    c.setBackground(Color.LIGHT_GRAY);
-                    c.setForeground(Color.BLACK);
-                    setToolTipText("Período fechado, não é permitido lançamentos/ARE");
+
+                if (!periodosAbertos.isEmpty() && row < periodosAbertos.size()) {
+                    Periodo p = periodosAbertos.get(row);
+                    if (p.getStatus() == StatusPeriodo.FECHADO) {
+                        c.setBackground(Color.LIGHT_GRAY);
+                        c.setForeground(Color.BLACK);
+                        setToolTipText("Período fechado, não é permitido lançamentos/ARE");
+                    } else {
+                        boolean doGeral = planosDoGeral.get(row % planosDoGeral.size());
+                        c.setBackground(doGeral ? new Color(255, 255, 200) : new Color(200, 255, 200));
+                        c.setForeground(Color.BLACK);
+                        setToolTipText(doGeral ? "Plano do Banco Geral" : "Plano do Banco Empresa");
+                    }
                 } else {
-                    boolean doGeral = planosDoGeral.get(row % planosDoGeral.size());
-                    c.setBackground(doGeral ? new Color(255, 255, 200) : new Color(200, 255, 200));
+                    c.setBackground(Color.WHITE);
                     c.setForeground(Color.BLACK);
-                    setToolTipText(doGeral ? "Plano do Banco Geral" : "Plano do Banco Empresa");
+                    setToolTipText(null);
                 }
+
                 if (isSelected) {
                     c.setBackground(new Color(100, 149, 237));
                     c.setForeground(Color.WHITE);
                 }
+
                 return c;
             }
         });
@@ -107,13 +127,10 @@ public class PeriodoJDialog extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Spinners para datas
-        SpinnerDateModel modelInicio = new SpinnerDateModel();
-        spinnerInicio = new JSpinner(modelInicio);
+        // Spinners
+        spinnerInicio = new JSpinner(new SpinnerDateModel());
         spinnerInicio.setEditor(new JSpinner.DateEditor(spinnerInicio, "yyyy-MM-dd"));
-
-        SpinnerDateModel modelFim = new SpinnerDateModel();
-        spinnerFim = new JSpinner(modelFim);
+        spinnerFim = new JSpinner(new SpinnerDateModel());
         spinnerFim.setEditor(new JSpinner.DateEditor(spinnerFim, "yyyy-MM-dd"));
 
         gbc.gridx = 0;
@@ -143,6 +160,12 @@ public class PeriodoJDialog extends JDialog {
         btnConfirmar = new JButton("Confirmar Seleção");
         painelNovo.add(btnConfirmar, gbc);
 
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2;
+        btnVoltar = new JButton("Voltar para Lançamentos");
+        painelNovo.add(btnVoltar, gbc);
+
         add(painelNovo, BorderLayout.SOUTH);
     }
 
@@ -156,6 +179,7 @@ public class PeriodoJDialog extends JDialog {
         });
 
         btnAdicionar.addActionListener(this::adicionarNovoPeriodo);
+
         btnConfirmar.addActionListener(e -> {
             int linha = tabelaPeriodos.getSelectedRow();
             if (linha >= 0 && linha < periodosAbertos.size()) {
@@ -167,16 +191,25 @@ public class PeriodoJDialog extends JDialog {
                 JOptionPane.showMessageDialog(this, "Selecione um período.", "Atenção", JOptionPane.WARNING_MESSAGE);
             }
         });
+
+        btnVoltar.addActionListener(e -> {
+            dispose(); // apenas fecha o diálogo, retorna ao fluxo anterior
+        });
     }
 
     private void carregarPeriodosAbertos() {
         try {
             periodosAbertos = periodoController.listarPeriodos();
             tabelaModel.setRowCount(0);
-            for (Periodo p : periodosAbertos) {
-                tabelaModel.addRow(new Object[]{
-                        p.getId(), p.getInicio(), p.getFim(), p.getIdPlano(), p.getStatus()
-                });
+
+            if (periodosAbertos.isEmpty()) {
+                tabelaModel.addRow(new Object[]{"-", "-", "-", "-", "-"});
+            } else {
+                for (Periodo p : periodosAbertos) {
+                    tabelaModel.addRow(new Object[]{
+                            p.getId(), p.getInicio(), p.getFim(), p.getIdPlano(), p.getStatus()
+                    });
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar períodos: " + e.getMessage());
@@ -202,8 +235,7 @@ public class PeriodoJDialog extends JDialog {
             }
 
             // Banco empresa
-            try (Connection connEmpresa = AbreBancoEmpresa.obterConexao();
-                 PreparedStatement ps = connEmpresa.prepareStatement("SELECT id, nome FROM planos_de_contas");
+            try (PreparedStatement ps = connEmpresa.prepareStatement("SELECT id, nome FROM planos_de_contas");
                  ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
@@ -275,4 +307,16 @@ public class PeriodoJDialog extends JDialog {
         }
     }
 
+    @Override
+    public void dispose() {
+        // fecha a conexão persistente
+        try {
+            if (connEmpresa != null && !connEmpresa.isClosed()) {
+                connEmpresa.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        super.dispose();
+    }
 }
