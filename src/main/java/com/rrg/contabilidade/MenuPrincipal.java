@@ -50,7 +50,7 @@ public class MenuPrincipal extends JMenuBar implements SessaoListener {
 
         miEmpresas = new JMenuItem("Cadastro de Empresas");
         miEmpresas.addActionListener(e -> {
-            CadastroDeEmpresa cadastroEmpresa = new CadastroDeEmpresa(programaPrincipal, null);
+            CadastroDeEmpresas cadastroEmpresa = new CadastroDeEmpresas(programaPrincipal, null);
             programaPrincipal.setPainelCentral(cadastroEmpresa);
         });
 

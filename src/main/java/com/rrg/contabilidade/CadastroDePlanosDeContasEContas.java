@@ -34,6 +34,7 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
 
     public CadastroDePlanosDeContasEContas(ProgramaPrincipal programaPrincipal) {
         this.programaPrincipal = programaPrincipal;
+        this.programaPrincipal.setMenuAtivo(false);
         this.planoController = new PlanoDeContasController();
         this.contaController = new ContaController();
         this.empresaController = new EmpresaController();
@@ -124,8 +125,8 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
                 carregarPlanos();
                 atualizarEstadoBotoes();
                 JOptionPane.showMessageDialog(this,
-                        "Banco Empresa selecionado: " +
-                        empresaSelecionada.getRazao());
+                        "Banco Empresa selecionado: "
+                        + empresaSelecionada.getRazao());
             }
         });
 
@@ -141,7 +142,10 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
 
         btCadastroContas.addActionListener(e -> abrirCadastroContas());
 
-        btSair.addActionListener(e -> programaPrincipal.abrirTelaPrincipal());
+        btSair.addActionListener(e -> {
+            programaPrincipal.setMenuAtivo(true);
+            programaPrincipal.abrirTelaPrincipal();
+        });
     }
 
     private void atualizarEstadoBotoes() {
@@ -195,7 +199,9 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
     private void carregarContasDoPlano() {
         listModelContas.clear();
         PlanoDeContas plano = (PlanoDeContas) cbPlanos.getSelectedItem();
-        if (plano == null) return;
+        if (plano == null) {
+            return;
+        }
 
         List<Conta> contas = contaController.listarContasPorPlano(plano.getId(),
                 usarBancoEmpresa);
@@ -208,11 +214,15 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
     private void inserirPlano() {
         String nome = JOptionPane.showInputDialog(this,
                 "Informe o nome do novo plano:");
-        if (nome == null || nome.trim().isEmpty()) return;
+        if (nome == null || nome.trim().isEmpty()) {
+            return;
+        }
 
         String descricao = JOptionPane.showInputDialog(this,
                 "Informe a descrição do plano:");
-        if (descricao == null) descricao = "";
+        if (descricao == null) {
+            descricao = "";
+        }
 
         PlanoDeContas plano = new PlanoDeContas();
         plano.setNome(nome.trim());
@@ -220,7 +230,7 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
 
         if (planoController.salvarPlano(plano, usarBancoEmpresa)) {
             carregarPlanos();
-            JOptionPane.showMessageDialog(this, 
+            JOptionPane.showMessageDialog(this,
                     "Plano inserido com sucesso!");
         } else {
             JOptionPane.showMessageDialog(this,
@@ -231,7 +241,9 @@ public class CadastroDePlanosDeContasEContas extends JPanel {
 
     private void excluirPlano() {
         PlanoDeContas plano = (PlanoDeContas) cbPlanos.getSelectedItem();
-        if (plano == null) return;
+        if (plano == null) {
+            return;
+        }
 
         int opcao = JOptionPane.showConfirmDialog(this,
                 "Deseja excluir o plano " + plano.getNome() + "?",

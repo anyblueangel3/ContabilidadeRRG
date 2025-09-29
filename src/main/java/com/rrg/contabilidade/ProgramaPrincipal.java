@@ -115,4 +115,23 @@ public class ProgramaPrincipal extends JFrame {
         }
     }
 
+    public void setMenuAtivo(boolean ativo) {
+        if (getJMenuBar() != null) {
+            getJMenuBar().setEnabled(ativo);
+            // Também percorre os menus e items, porque setEnabled(true/false) sozinho não afeta JMenuItem
+            for (int i = 0; i < getJMenuBar().getMenuCount(); i++) {
+                JMenu menu = getJMenuBar().getMenu(i);
+                if (menu != null) {
+                    menu.setEnabled(ativo);
+                    for (int j = 0; j < menu.getItemCount(); j++) {
+                        JMenuItem item = menu.getItem(j);
+                        if (item != null) {
+                            item.setEnabled(ativo);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

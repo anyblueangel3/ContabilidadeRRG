@@ -26,6 +26,7 @@ public class CadastroDePapeis extends JPanel {
 
     public CadastroDePapeis(ProgramaPrincipal programaPrincipal, Usuario usuario) {
         this.programaPrincipal = programaPrincipal;
+        this.programaPrincipal.setMenuAtivo(false);
         this.controller = new PapelController();
         this.usuario = usuario;
 
@@ -108,6 +109,9 @@ public class CadastroDePapeis extends JPanel {
 
         });
 
-        btSair.addActionListener(e -> programaPrincipal.abrirTelaPrincipal());
+        btSair.addActionListener(e -> {
+            programaPrincipal.setMenuAtivo(true);
+            programaPrincipal.abrirTelaPrincipal();
+        });
     }
 }

@@ -35,7 +35,8 @@ public class PeriodoJDialog extends JDialog {
     private List<Integer> idsPlanos;
     private List<Boolean> planosDoGeral;
 
-    private SimpleDateFormat formatoData = new SimpleDateFormat("yyyy-MM-dd");
+    // Formato dd/MM/yyyy conforme solicitado
+    private SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
     private Connection connEmpresa; // conexão persistente
 
     public PeriodoJDialog(Frame parent) {
@@ -91,12 +92,19 @@ public class PeriodoJDialog extends JDialog {
 
                 if (!periodosAbertos.isEmpty() && row < periodosAbertos.size()) {
                     Periodo p = periodosAbertos.get(row);
-                    if (p.getStatus() == StatusPeriodo.FECHADO) {
+                    if (p != null && p.getStatus() == StatusPeriodo.FECHADO) {
                         c.setBackground(Color.LIGHT_GRAY);
                         c.setForeground(Color.BLACK);
                         setToolTipText("Período fechado, não é permitido lançamentos/ARE");
                     } else {
-                        boolean doGeral = planosDoGeral.get(row % planosDoGeral.size());
+                        boolean doGeral = false;
+                        if (!planosDoGeral.isEmpty()) {
+                            // evita modulo por zero e index out of range
+                            int idx = row % planosDoGeral.size();
+                            if (idx >= 0 && idx < planosDoGeral.size()) {
+                                doGeral = planosDoGeral.get(idx);
+                            }
+                        }
                         c.setBackground(doGeral ? new Color(255, 255, 200) : new Color(200, 255, 200));
                         c.setForeground(Color.BLACK);
                         setToolTipText(doGeral ? "Plano do Banco Geral" : "Plano do Banco Empresa");
@@ -127,11 +135,11 @@ public class PeriodoJDialog extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Spinners
+        // Spinners (usando dd/MM/yyyy)
         spinnerInicio = new JSpinner(new SpinnerDateModel());
-        spinnerInicio.setEditor(new JSpinner.DateEditor(spinnerInicio, "yyyy-MM-dd"));
+        spinnerInicio.setEditor(new JSpinner.DateEditor(spinnerInicio, "dd/MM/yyyy"));
         spinnerFim = new JSpinner(new SpinnerDateModel());
-        spinnerFim.setEditor(new JSpinner.DateEditor(spinnerFim, "yyyy-MM-dd"));
+        spinnerFim.setEditor(new JSpinner.DateEditor(spinnerFim, "dd/MM/yyyy"));
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -206,8 +214,10 @@ public class PeriodoJDialog extends JDialog {
                 tabelaModel.addRow(new Object[]{"-", "-", "-", "-", "-"});
             } else {
                 for (Periodo p : periodosAbertos) {
+                    String inicioStr = p.getInicio() != null ? formatoData.format(p.getInicio()) : "-";
+                    String fimStr = p.getFim() != null ? formatoData.format(p.getFim()) : "-";
                     tabelaModel.addRow(new Object[]{
-                            p.getId(), p.getInicio(), p.getFim(), p.getIdPlano(), p.getStatus()
+                            p.getId(), inicioStr, fimStr, p.getIdPlano(), p.getStatus()
                     });
                 }
             }
@@ -248,6 +258,9 @@ public class PeriodoJDialog extends JDialog {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao carregar planos: " + e.getMessage());
         }
+
+        // Ajusta renderer do combo de períodos: exibe datas em dd/MM/yyyy
+        // (não altera cbPeriodos — isso é feito em carregarPeriodos)
     }
 
     private void adicionarNovoPeriodo(ActionEvent evt) {

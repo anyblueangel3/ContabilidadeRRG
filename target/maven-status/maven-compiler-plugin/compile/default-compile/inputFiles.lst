@@ -6,13 +6,16 @@ C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\OperacaoDoPapelDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\GeradorDasOperacoes.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\CadastroDeContasJDialog.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\CadastroDeEmpresas.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\UsuarioController.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\ContaDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\OperacaoDoPapelController.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\Contabilidade.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\GeradorDasOperacoesPapeis.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\OperacaoController.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\LancamentoItem.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\Lancamentos.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\Lancamento.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\PeriodoController.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PermissaoDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PermissaoDeUsuarioDAO.java
@@ -23,8 +26,8 @@ C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\OperacaoDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\PeriodoDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\Usuario.java
+C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\TipoLancamento.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\controller\GestorDasOperacoesDosPapeisController.java
-C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\CadastroDeEmpresa.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\dao\GestorDasOperacoesDosPapeisDAO.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\model\StatusPeriodo.java
 C:\Users\Usuario\Documents\NetBeansProjects\contabilidade\src\main\java\com\rrg\contabilidade\util\GeradorDosPlanosDeContasPadrao.java

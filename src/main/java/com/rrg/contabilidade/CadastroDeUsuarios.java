@@ -34,6 +34,7 @@ public class CadastroDeUsuarios extends JPanel {
 
     public CadastroDeUsuarios(ProgramaPrincipal programaPrincipal, Usuario usuario, boolean primeiroAcesso) {
         this.programaPrincipal = programaPrincipal;
+        this.programaPrincipal.setMenuAtivo(false);
         this.usuario = usuario != null ? usuario : new Usuario();
         this.usuarioController = new UsuarioController();
         this.papelController = new PapelController();
@@ -109,6 +110,7 @@ public class CadastroDeUsuarios extends JPanel {
         // Eventos
         btSalvar.addActionListener(e -> salvarUsuario());
         btSair.addActionListener(e -> {
+            programaPrincipal.setMenuAtivo(true);
             if (!SessaoDeUsuario.isLogado() && usuario != null && usuario.getId() != null)
                 SessaoDeUsuario.logar(usuario);
             programaPrincipal.abrirTelaPrincipal();

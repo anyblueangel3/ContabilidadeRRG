@@ -1,4 +1,4 @@
-package com.rrg.contabilidade.model.dao;
+package com.rrg.contabilidade.model;
 
 import com.rrg.contabilidade.model.TipoLancamento;
 import java.math.BigDecimal;

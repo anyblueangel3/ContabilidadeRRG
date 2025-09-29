@@ -71,10 +71,12 @@ public class SessaoDeUsuario {
     
     public static void logarPeriodo(Periodo periodo) {
         periodoLogado = periodo;
+        notificarLogar();
     }
 
     public static void logoutPeriodo() {
         periodoLogado = null;
+        notificarLogout();
     }
 
     public static boolean isPeriodoLogado() {

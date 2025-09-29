@@ -14,7 +14,7 @@ import java.util.Optional;
  *
  * Painel de cadastro de empresas MVC: View + Controller
  */
-public class CadastroDeEmpresa extends JPanel {
+public class CadastroDeEmpresas extends JPanel {
 
     private ProgramaPrincipal programaPrincipal;
     private Empresa empresa;
@@ -30,8 +30,9 @@ public class CadastroDeEmpresa extends JPanel {
     private JButton btAlterar;
     private JButton btSair;
 
-    public CadastroDeEmpresa(ProgramaPrincipal programaPrincipal, Empresa empresa) {
+    public CadastroDeEmpresas(ProgramaPrincipal programaPrincipal, Empresa empresa) {
         this.programaPrincipal = programaPrincipal;
+        this.programaPrincipal.setMenuAtivo(false);
         this.empresa = empresa != null ? empresa : new Empresa();
         this.controller = new EmpresaController();
 
@@ -178,7 +179,10 @@ public class CadastroDeEmpresa extends JPanel {
             preencherCamposParaAlteracao(empresa);
         });
 
-        btSair.addActionListener(e -> programaPrincipal.abrirTelaPrincipal());
+        btSair.addActionListener(e -> {
+            programaPrincipal.setMenuAtivo(true);
+            programaPrincipal.abrirTelaPrincipal();
+        });
     }
 
     private void preencherCamposParaAlteracao(Empresa empresa) {
