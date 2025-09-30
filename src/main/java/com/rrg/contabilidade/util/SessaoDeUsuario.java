@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ *
  * @author Ronaldo Rodrigues Godoi e Chat GPT
- * 
+ *
  * Controla o usuário atualmente logado no sistema.
  */
 public class SessaoDeUsuario {
+
     private static Usuario usuarioLogado;
     private static Empresa empresaLogada;
     private static Periodo periodoLogado;
@@ -52,7 +53,7 @@ public class SessaoDeUsuario {
     public static Usuario getUsuarioLogado() {
         return usuarioLogado;
     }
-    
+
     public static void logarEmpresa(Empresa empresa) {
         empresaLogada = empresa;
     }
@@ -68,13 +69,19 @@ public class SessaoDeUsuario {
     public static Empresa getEmpresaLogada() {
         return empresaLogada;
     }
-    
+
     public static void logarPeriodo(Periodo periodo) {
         periodoLogado = periodo;
         notificarLogar();
     }
 
     public static void logoutPeriodo() {
+
+        if (periodoLogado == null) {
+            // Já está deslogado, não faz nada
+            return;
+        }
+
         periodoLogado = null;
         notificarLogout();
     }
