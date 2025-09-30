@@ -54,7 +54,9 @@ com\rrg\contabilidade\CadastroDeEmpresas.class
 com\rrg\contabilidade\GestorDasOperacoesDosUsuarios.class
 com\rrg\contabilidade\util\GeradorDosPapeis.class
 com\rrg\contabilidade\model\PlanoDeContas.class
+com\rrg\contabilidade\controller\LancamentoController.class
 com\rrg\contabilidade\controller\OperacaoDoPapelController.class
+com\rrg\contabilidade\model\dao\LancamentoDAO.class
 com\rrg\contabilidade\model\Papel.class
 com\rrg\contabilidade\CadastroDeUsuarios$1.class
 com\rrg\contabilidade\CadastroDeContasJDialog.class

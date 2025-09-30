@@ -14,7 +14,10 @@ public class ContaDAO {
     public boolean inserirConta(Conta conta, boolean usarBancoEmpresa) {
         String sql = "INSERT INTO contas (id, codigo_sped, descricao, classificacao, natureza, id_plano, obrigatorio_ecd, obrigatorio_ecf) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conexao = usarBancoEmpresa ? AbreBancoEmpresa.obterConexao() : AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql)) {
+        try (Connection conexao = usarBancoEmpresa ?
+                AbreBancoEmpresa.obterConexao() :
+                AbreBancoGeral.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
 
             ps.setString(1, conta.getId());
             ps.setInt(2, conta.getCodigoSPED() != null ? conta.getCodigoSPED() : 0);
@@ -38,7 +41,10 @@ public class ContaDAO {
         String sql = "UPDATE contas SET codigo_sped = ?, descricao = ?, classificacao = ?, natureza = ?, "
                 + "obrigatorio_ecd = ?, obrigatorio_ecf = ? "
                 + "WHERE id = ? AND id_plano = ?";
-        try (Connection conexao = usarBancoEmpresa ? AbreBancoEmpresa.obterConexao() : AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql)) {
+        try (Connection conexao = usarBancoEmpresa ?
+                AbreBancoEmpresa.obterConexao() :
+                AbreBancoGeral.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
 
             ps.setInt(1, conta.getCodigoSPED() != null ? conta.getCodigoSPED() : 0);
             ps.setString(2, conta.getDescricao());
@@ -60,7 +66,10 @@ public class ContaDAO {
     // Excluir conta
     public boolean excluirConta(String id, Integer idPlano, boolean usarBancoEmpresa) {
         String sql = "DELETE FROM contas WHERE id = ? AND id_plano = ?";
-        try (Connection conexao = usarBancoEmpresa ? AbreBancoEmpresa.obterConexao() : AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql)) {
+        try (Connection conexao = usarBancoEmpresa ?
+                AbreBancoEmpresa.obterConexao() :
+                AbreBancoGeral.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
 
             ps.setString(1, id);
             ps.setInt(2, idPlano);
@@ -77,7 +86,11 @@ public class ContaDAO {
     public List<Conta> listarContasPorPlano(Integer idPlano, boolean usarBancoEmpresa) {
         List<Conta> lista = new ArrayList<>();
         String sql = "SELECT * FROM contas WHERE id_plano = ? ORDER BY id";
-        try (Connection conexao = usarBancoEmpresa ? AbreBancoEmpresa.obterConexao() : AbreBancoGeral.obterConexao(); PreparedStatement ps = conexao.prepareStatement(sql)) {
+        
+        try (Connection conexao = usarBancoEmpresa ?
+                AbreBancoEmpresa.obterConexao() :
+                AbreBancoGeral.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
 
             ps.setInt(1, idPlano);
             try (ResultSet rs = ps.executeQuery()) {
