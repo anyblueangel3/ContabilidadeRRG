@@ -1,8 +1,10 @@
 com\rrg\contabilidade\Lancamentos.class
 com\rrg\contabilidade\model\dao\ContaDAO.class
 com\rrg\contabilidade\util\SessaoDeUsuario.class
+com\rrg\contabilidade\ItemJDialog.class
 com\rrg\contabilidade\model\dao\PermissaoDAO.class
 com\rrg\contabilidade\controller\GestorDasOperacoesDosPapeisController.class
+com\rrg\contabilidade\ItemJDialog$4.class
 com\rrg\contabilidade\model\Empresa.class
 com\rrg\contabilidade\util\PermissaoUtil.class
 com\rrg\contabilidade\controller\ContaController.class
@@ -24,6 +26,7 @@ com\rrg\contabilidade\model\Usuario.class
 com\rrg\contabilidade\model\dao\OperacaoDoPapelDAO.class
 com\rrg\contabilidade\util\AbreBancoEmpresa.class
 com\rrg\contabilidade\CadastroDeUsuarios.class
+com\rrg\contabilidade\ItemJDialog$3.class
 com\rrg\contabilidade\util\InicializadorDeBancoDeDadosGeral.class
 com\rrg\contabilidade\util\ValidadorDeContas.class
 com\rrg\contabilidade\util\PasswordUtils.class
@@ -37,6 +40,7 @@ com\rrg\contabilidade\controller\UsuarioController.class
 com\rrg\contabilidade\LoginUsuarioEmpresaPeriodo$1.class
 com\rrg\contabilidade\model\dao\EmpresaDAO.class
 com\rrg\contabilidade\util\SessaoListener.class
+com\rrg\contabilidade\ItemJDialog$6.class
 com\rrg\contabilidade\model\TipoLancamento.class
 com\rrg\contabilidade\controller\PlanoDeContasController.class
 com\rrg\contabilidade\model\Lancamento.class
@@ -48,13 +52,17 @@ com\rrg\contabilidade\model\LancamentoItem.class
 com\rrg\contabilidade\ProgramaPrincipal$1.class
 com\rrg\contabilidade\model\dao\GestorDasOperacoesDosUsuariosDAO.class
 com\rrg\contabilidade\util\CriadorDasTabelasDoBancoDeDadosEmpresa.class
+com\rrg\contabilidade\ItemJDialog$2.class
 com\rrg\contabilidade\util\GeradorDosPlanosDeContasPadrao.class
 com\rrg\contabilidade\util\CriadorDasTabelasDoBancoDeDadosGeral.class
+com\rrg\contabilidade\Lancamentos$2.class
 com\rrg\contabilidade\CadastroDeEmpresas.class
 com\rrg\contabilidade\GestorDasOperacoesDosUsuarios.class
 com\rrg\contabilidade\util\GeradorDosPapeis.class
+com\rrg\contabilidade\ItemJDialog$DigitsLimitFilter.class
 com\rrg\contabilidade\model\PlanoDeContas.class
 com\rrg\contabilidade\controller\LancamentoController.class
+com\rrg\contabilidade\ItemJDialog$5.class
 com\rrg\contabilidade\controller\OperacaoDoPapelController.class
 com\rrg\contabilidade\model\dao\LancamentoDAO.class
 com\rrg\contabilidade\model\Papel.class
@@ -67,6 +75,7 @@ com\rrg\contabilidade\util\AbreBancoGeral.class
 com\rrg\contabilidade\model\dao\PapelDAO.class
 com\rrg\contabilidade\model\StatusPeriodo.class
 com\rrg\contabilidade\controller\PeriodoController.class
+com\rrg\contabilidade\Lancamentos$1.class
 com\rrg\contabilidade\CadastroDePapeis.class
 com\rrg\contabilidade\Contabilidade.class
 com\rrg\contabilidade\model\OperacaoDoPapel.class
@@ -74,3 +83,4 @@ com\rrg\contabilidade\util\GeradorDasOperacoesPapeis.class
 com\rrg\contabilidade\controller\PapelController.class
 com\rrg\contabilidade\PeriodoJDialog$2.class
 com\rrg\contabilidade\util\OperacoesDoSistema.class
+com\rrg\contabilidade\ItemJDialog$1.class
