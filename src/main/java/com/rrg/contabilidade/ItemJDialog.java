@@ -30,7 +30,7 @@ public class ItemJDialog extends JDialog {
     private final JScrollPane scrollSugestoes = new JScrollPane(listSugestoes);
 
     private List<LancamentoItem> resultado = null;
-    private boolean updating = false; // para evitar loops
+    private boolean updating = false;
 
     public ItemJDialog(Frame parent) {
         super(parent, "Digitar Itens do Lançamento", true);
@@ -50,7 +50,6 @@ public class ItemJDialog extends JDialog {
         table = new JTable(model);
         table.setRowHeight(22);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
         table.getColumnModel().getColumn(2).setPreferredWidth(120);
         table.getColumnModel().getColumn(3).setPreferredWidth(120);
 
@@ -74,24 +73,34 @@ public class ItemJDialog extends JDialog {
             }
         });
 
-        // Mouse listener para foco em edição da conta
-        table.addMouseListener(new MouseAdapter() {
+        // Popup sugestões
+        listSugestoes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        scrollSugestoes.setPreferredSize(new Dimension(300, 160));
+        popupSugestoes.setFocusable(false);
+        popupSugestoes.add(scrollSugestoes);
+
+        listSugestoes.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                int row = table.rowAtPoint(e.getPoint());
-                int col = table.columnAtPoint(e.getPoint());
-                if (row >= 0 && col == 0) {
-                    table.editCellAt(row, col);
-                    Component editor = table.getEditorComponent();
-                    if (editor instanceof JTextField tf) {
-                        tf.requestFocusInWindow();
-                        tf.selectAll();
-                    }
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) selecionarSugestao();
+            }
+        });
+
+        listSugestoes.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) selecionarSugestao();
+                else if (e.getKeyCode() == KeyEvent.VK_TAB) {
+                    popupSugestoes.setVisible(false);
+                    int row = table.getEditingRow();
+                    table.editCellAt(row, 1);
+                    Component ce = table.getEditorComponent();
+                    if (ce instanceof JComboBox<?> cb) cb.requestFocusInWindow();
                 }
             }
         });
 
-        // KeyListener para autocomplete e movimentação entre colunas
+        // Table KeyListener
         table.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -99,44 +108,63 @@ public class ItemJDialog extends JDialog {
                 int col = table.getSelectedColumn();
                 if (row < 0 || col < 0) return;
 
-                if (col == 0) {
-                    Component c = table.getEditorComponent();
-                    if (c instanceof JTextField tf) {
-                        SwingUtilities.invokeLater(() -> mostrarSugestoes(tf, tf.getText()));
-                    }
-                } else if (col == 1) {
-                    if (e.getKeyChar() == 'd' || e.getKeyChar() == 'D' ||
-                        e.getKeyChar() == 'c' || e.getKeyChar() == 'C') {
-                        table.editCellAt(row, 2);
-                        Component ce = table.getEditorComponent();
-                        if (ce instanceof JTextField tf) tf.requestFocusInWindow();
-                    }
-                } else if (col == 2 && e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    int nextRow = table.getSelectedRow();
-                    if (nextRow == table.getRowCount() - 1) {
-                        model.addRow(new Object[]{"", "D", "", ""});
-                    }
-                    table.changeSelection(nextRow + 1, 0, false, false);
-                    table.editCellAt(nextRow + 1, 0);
-                }
-            }
-        });
+                Component c = table.getEditorComponent();
 
-        // Popup sugestões
-        listSugestoes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        listSugestoes.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) selecionarSugestao();
-            }
-        });
-        scrollSugestoes.setPreferredSize(new Dimension(300, 160));
-        popupSugestoes.setFocusable(false);
-        popupSugestoes.add(scrollSugestoes);
-        listSugestoes.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) selecionarSugestao();
+                // Autocomplete na coluna "Conta"
+                if (col == 0 && c instanceof JTextField tf) {
+                    SwingUtilities.invokeLater(() -> mostrarSugestoes(tf, tf.getText()));
+
+                    switch (e.getKeyCode()) {
+                        case KeyEvent.VK_ENTER -> {
+                            if (popupSugestoes.isVisible() && listSugestoes.getSelectedIndex() >= 0) {
+                                selecionarSugestao();
+                            } else if (!tf.getText().isBlank()) {
+                                table.editCellAt(row, 1);
+                                Component ce = table.getEditorComponent();
+                                if (ce instanceof JComboBox<?> cb) cb.requestFocusInWindow();
+                                popupSugestoes.setVisible(false);
+                            }
+                        }
+                        case KeyEvent.VK_DOWN, KeyEvent.VK_UP -> {
+                            if (popupSugestoes.isVisible()) {
+                                listSugestoes.requestFocusInWindow();
+                                if (listSugestoes.getSelectedIndex() < 0) listSugestoes.setSelectedIndex(0);
+                            }
+                        }
+                    }
+
+                    tf.addFocusListener(new FocusAdapter() {
+                        @Override
+                        public void focusLost(FocusEvent e) {
+                            SwingUtilities.invokeLater(() -> popupSugestoes.setVisible(false));
+                        }
+                    });
+                }
+
+                // Coluna "Tipo"
+                if (col == 1 && ("D".equalsIgnoreCase(String.valueOf(e.getKeyChar()))
+                        || "C".equalsIgnoreCase(String.valueOf(e.getKeyChar())))) {
+                    table.editCellAt(row, 2);
+                    Component ce = table.getEditorComponent();
+                    if (ce instanceof JTextField tf2) tf2.requestFocusInWindow();
+                }
+
+                // Coluna "Valor"
+                if (col == 2 && e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if (linhaValida(row)) {
+                        if (row == table.getRowCount() - 1) {
+                            model.addRow(new Object[]{"", "D", "", ""});
+                        }
+                        table.changeSelection(row + 1, 0, false, false);
+                        table.editCellAt(row + 1, 0);
+                        Component ce = table.getEditorComponent();
+                        if (ce instanceof JTextField tf3) tf3.requestFocusInWindow();
+                    } else {
+                        JOptionPane.showMessageDialog(ItemJDialog.this,
+                                "Preencha corretamente Conta e Valor antes de avançar.",
+                                "Aviso", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
             }
         });
 
@@ -159,7 +187,6 @@ public class ItemJDialog extends JDialog {
         south.add(southRight, BorderLayout.EAST);
 
         painel.add(south, BorderLayout.SOUTH);
-
         getContentPane().add(painel);
         setSize(700, 400);
         setLocationRelativeTo(parent);
@@ -167,7 +194,13 @@ public class ItemJDialog extends JDialog {
         // Primeira linha e foco inicial
         model.addRow(new Object[]{"", "D", "", ""});
         table.editCellAt(0, 0);
-        table.requestFocusInWindow();
+        SwingUtilities.invokeLater(() -> {
+            Component c0 = table.getEditorComponent();
+            if (c0 instanceof JTextField tf0) {
+                tf0.requestFocusInWindow();
+                tf0.selectAll();
+            }
+        });
 
         // Ações botões
         btConfirmar.addActionListener(e -> {
@@ -206,6 +239,12 @@ public class ItemJDialog extends JDialog {
         });
     }
 
+    private boolean linhaValida(int row) {
+        String conta = model.getValueAt(row, 0) == null ? "" : model.getValueAt(row, 0).toString().trim();
+        String valor = model.getValueAt(row, 2) == null ? "" : model.getValueAt(row, 2).toString().trim();
+        return !conta.isBlank() && !valor.isBlank();
+    }
+
     private void selecionarSugestao() {
         String sel = listSugestoes.getSelectedValue();
         if (sel == null) return;
@@ -223,11 +262,11 @@ public class ItemJDialog extends JDialog {
     private void mostrarSugestoes(JTextField tf, String texto) {
         if (texto == null) texto = "";
         final String t = texto.trim();
-        if (t.isEmpty()) {
-            popupSugestoes.setVisible(false);
-            return;
-        }
         SwingUtilities.invokeLater(() -> {
+            if (t.isEmpty()) {
+                popupSugestoes.setVisible(false);
+                return;
+            }
             List<String> resultados = buscarContas(t);
             if (resultados.isEmpty()) {
                 popupSugestoes.setVisible(false);
@@ -235,12 +274,14 @@ public class ItemJDialog extends JDialog {
             }
             listSugestoes.setListData(resultados.toArray(new String[0]));
             listSugestoes.setSelectedIndex(0);
+
             try {
                 Rectangle cellRect = table.getCellRect(table.getEditingRow(),
                         table.getEditingColumn(), true);
-                popupSugestoes.show(this,
-                        cellRect.x + table.getLocation().x,
-                        cellRect.y + cellRect.height + table.getLocation().y);
+                Point pt = cellRect.getLocation();
+                SwingUtilities.convertPointToScreen(pt, table);
+                popupSugestoes.show(this, pt.x - getLocationOnScreen().x,
+                        pt.y - getLocationOnScreen().y + cellRect.height + 2);
                 popupSugestoes.setInvoker(this);
             } catch (IllegalComponentStateException ex) {
                 popupSugestoes.show(this, getWidth() / 2 - 150, getHeight() / 2 - 80);
@@ -272,9 +313,8 @@ public class ItemJDialog extends JDialog {
         for (int r = 0; r < model.getRowCount(); r++) {
             Object raw = model.getValueAt(r, 2);
             String s = raw == null ? "" : raw.toString().trim();
-            if (s.isBlank()) {
-                model.setValueAt("", r, 3);
-            } else {
+            if (s.isBlank()) model.setValueAt("", r, 3);
+            else {
                 try {
                     BigDecimal bd = new BigDecimal(new BigInteger(s), 2);
                     model.setValueAt(bd.setScale(2).toPlainString(), r, 3);

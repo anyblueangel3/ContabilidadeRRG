@@ -40,7 +40,7 @@ com\rrg\contabilidade\controller\UsuarioController.class
 com\rrg\contabilidade\LoginUsuarioEmpresaPeriodo$1.class
 com\rrg\contabilidade\model\dao\EmpresaDAO.class
 com\rrg\contabilidade\util\SessaoListener.class
-com\rrg\contabilidade\ItemJDialog$6.class
+com\rrg\contabilidade\ItemJDialog$5$1.class
 com\rrg\contabilidade\model\TipoLancamento.class
 com\rrg\contabilidade\controller\PlanoDeContasController.class
 com\rrg\contabilidade\model\Lancamento.class
